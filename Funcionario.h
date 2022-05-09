@@ -9,6 +9,7 @@ class Funcionario{
 
 public:
     Funcionario();
+    Funcionario(string nome, string endereco, string telefone, string dataIni, string designacao, double salario);
     ~Funcionario();
 
 private:

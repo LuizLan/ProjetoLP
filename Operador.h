@@ -2,7 +2,7 @@
 
 #pragma once
 
-class Operador{
+class Operador:public Funcionario{
 
 public:
     Operador();
