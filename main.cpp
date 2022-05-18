@@ -44,7 +44,6 @@ int main(){
         cin.ignore();
 
         gerenciador.cadastrarFuncionario(tipo);
-
         break;    
     case 2:
 
@@ -53,7 +52,9 @@ int main(){
     case 3:
 
         break;
+    case 4:
 
+        break;
     default:
 
         break;
