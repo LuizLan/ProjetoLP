@@ -27,7 +27,7 @@ public:
     void setTelefone(string T);
     void setDataIni(string D);
     void setDesignacao(string D);
-    void setSalario(string S);
+    void setSalario(float S);
 
 private:
 
