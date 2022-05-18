@@ -21,6 +21,14 @@ public:
     string getDesignacao();
     double getSalario();
 
+    void setCodigo(string C);
+    void setNome(string N);
+    void setEndereco(string E);
+    void setTelefone(string T);
+    void setDataIni(string D);
+    void setDesignacao(string D);
+    void setSalario(string S);
+
 private:
 
     string codigo, nome, endereco, telefone, dataIni, designacao;

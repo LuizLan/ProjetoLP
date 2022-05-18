@@ -24,7 +24,6 @@ void GerenciadorFuncionarios::cadastrarFuncionario(int tipo){
             cin >> salario;
             cin.ignore();
 
-        //auto *vet = new Operador(codigo, nome, endereco, telefone, dataIni, "Operario", salario);
         listaFuncionarios.push_back(new Operador(codigo, nome, endereco, telefone, dataIni, "Operario", salario));
 
         break;
@@ -39,7 +38,6 @@ void GerenciadorFuncionarios::cadastrarFuncionario(int tipo){
             cin.ignore();
             getline(cin, areaSup);
 
-        //auto *vet = new Gerente(codigo, nome, endereco, telefone, dataIni, "Gerente", salario, areaSup);
         listaFuncionarios.push_back(new Gerente(codigo, nome, endereco, telefone, dataIni, "Gerente", salario, areaSup));
         break;
 
@@ -55,7 +53,6 @@ void GerenciadorFuncionarios::cadastrarFuncionario(int tipo){
             getline(cin, areaSup);
             getline(cin, areaForm);
 
-        //auto *vet = new Diretor(codigo, nome, endereco, telefone, dataIni, "Diretor", salario, areaSup, areaForm);
         listaFuncionarios.push_back(new Diretor(codigo, nome, endereco, telefone, dataIni, "Diretor", salario, areaSup, areaForm));
         break;
     case 4:
@@ -70,7 +67,6 @@ void GerenciadorFuncionarios::cadastrarFuncionario(int tipo){
             getline(cin, areaForm);
             getline(cin, nivelFormacao);
 
-        //auto *vet = new Presidente(codigo, nome, endereco, telefone, dataIni, "Presidente", salario, areaForm, nivelFormacao);
         listaFuncionarios.push_back(new Presidente(codigo, nome, endereco, telefone, dataIni, "Presidente", salario, areaForm, nivelFormacao));
         break;
     default:

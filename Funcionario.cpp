@@ -38,3 +38,25 @@ string Funcionario::getDesignacao(){
 double Funcionario::getSalario(){
     return salario;
 }
+
+void Funcionario::setCodigo(string C){
+    codigo = C;
+}
+void Funcionario::setNome(string N){
+    nome = N;
+}
+void Funcionario::setEndereco(string E){
+    endereco = E;
+}
+void Funcionario::setTelefone(string T){
+    telefone = T;
+}
+void Funcionario::setDataIni(string D){
+    dataIni = D;
+}
+void Funcionario::setDesignacao(string D){
+    designacao = D;
+}
+void Funcionario::setSalario(string S){
+    salario = S;
+}
