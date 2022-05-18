@@ -3,8 +3,9 @@
 Funcionario::Funcionario(){
 
 }
-Funcionario::Funcionario(string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario){
-    this->codigo;
+Funcionario::Funcionario(int tipo,string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario){
+    this -> tipo = tipo;
+    this->codigo = codigo;
     this->nome = nome;
     this->endereco = endereco;
     this->telefone=telefone;

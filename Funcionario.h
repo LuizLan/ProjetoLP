@@ -10,12 +10,8 @@ class Funcionario{
 
 public:
     Funcionario();
-    Funcionario(string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario); //construtor base para adicionar funcionarios
+    Funcionario(int tipo,string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario); //construtor base para adicionar funcionarios
     ~Funcionario();
-
-    virtual void editarFuncionario() = 0;
-    virtual void exibirFuncionario() = 0;
-    virtual void excluiFuncionario() = 0;
 
     string getCodigo();
     string getNome();
@@ -29,5 +25,6 @@ private:
 
     string codigo, nome, endereco, telefone, dataIni, designacao;
     double salario;
+    int tipo;
 
 };

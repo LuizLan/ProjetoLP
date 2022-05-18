@@ -12,9 +12,6 @@ public:
     string getAreaSup();
     string getAreaForm();
     
-    void adicionarFuncionario();
-    void exibirFuncionario();
-    
 
 private:
     string areaSup, areaForm;
