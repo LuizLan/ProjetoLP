@@ -14,7 +14,7 @@ menu :
 
         4.2 - Baseado no tipo
 
-    5 - buscar funcionário: nome, data de ingresso(intervalo de tempo), endereço;    
+    5 - buscar funcionário: nome(), data de ingresso(intervalo de tempo), endereço(bairro/cidade);    
 
     6 - Conceder Aumento
 
