@@ -24,7 +24,7 @@ int main(){
         cout << "1 - Cadastrar funcionario." << endl <<
                 "2 - Editar funcionario." << endl <<
                 "3 - Excluir funcionario." << endl <<
-                "4 - Exibir funcionario." << endl <<
+                "4 - Exibir todos os funcionarios." << endl <<
                 "5 - Buscar funcionario." << endl <<
                 "6 - Conceder aumento." << endl <<
                 "7 - Calcular folha salarial" << endl <<
@@ -56,6 +56,15 @@ int main(){
             break;
         case 4:
             gerenciador.exibirFuncionarios();
+            break;
+        case 5:
+            
+            break;
+        case 6:
+            
+            break;
+        case 7:
+            
             break;
         case 0:
             cout << "saindo..." << endl;
