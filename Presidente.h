@@ -11,6 +11,8 @@ public:
 
     string getAreaForm();
     string getNivelFormacao();
+    void setAreaForm(string A);
+    void setNivelFormacao(string N);
 
 private:
     string areaForm, nivelFormacao;

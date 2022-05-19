@@ -18,3 +18,10 @@ string Diretor::getAreaSup(){
 string Diretor::getAreaForm(){
     return areaForm;
 }
+
+void Diretor::setAreaSup(string A){
+    areaSup = A;
+}
+void Diretor::setAreaForm(string A){
+    areaForm = A;
+}

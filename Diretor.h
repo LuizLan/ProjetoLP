@@ -11,7 +11,8 @@ public:
 
     string getAreaSup();
     string getAreaForm();
-    
+    void setAreaSup(string A);
+    void setAreaForm(string A);
 
 private:
     string areaSup, areaForm;

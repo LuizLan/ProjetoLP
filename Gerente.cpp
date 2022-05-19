@@ -14,3 +14,6 @@ Gerente::~Gerente(){
 string Gerente::getAreaSup(){
     return areaSup;
 }
+void Gerente::setAreaSup(string A){
+    areaSup = A;
+}

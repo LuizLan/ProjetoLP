@@ -12,7 +12,12 @@ public:
     GerenciadorFuncionarios();
     virtual ~GerenciadorFuncionarios();
 
-    void cadastrarFuncionario(int tipo);
+    int cadastrarFuncionario(int tipo);
+    
+    int editarFuncionario();
+
+    void exibirFuncionarios();
+
 
 protected:
 

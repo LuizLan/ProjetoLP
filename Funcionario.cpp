@@ -17,6 +17,9 @@ Funcionario::~Funcionario(){
 
 }
 
+int Funcionario::getTipo(){
+    return tipo;
+}
 string Funcionario::getCodigo(){
     return codigo;
 }
@@ -39,6 +42,9 @@ double Funcionario::getSalario(){
     return salario;
 }
 
+void Funcionario::setTipo(int T){
+    tipo = T;
+}
 void Funcionario::setCodigo(string C){
     codigo = C;
 }
@@ -60,3 +66,11 @@ void Funcionario::setDesignacao(string D){
 void Funcionario::setSalario(float S){
     salario = S;
 }
+
+string Funcionario::getAreaSup(){}
+string Funcionario::getAreaForm(){}
+string Funcionario::getNivelFormacao(){}
+
+void Funcionario::setAreaSup(string A){}
+void Funcionario::setAreaForm(string A){}
+void Funcionario::setNivelFormacao(string N){}

@@ -10,6 +10,7 @@ public:
     ~Gerente();
 
     string getAreaSup();
+    void setAreaSup(string A);
 
 private:
     string areaSup;

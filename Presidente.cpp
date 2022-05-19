@@ -18,3 +18,10 @@ string Presidente::getAreaForm(){
 string Presidente::getNivelFormacao(){
     return nivelFormacao;
 }
+
+void Presidente::setAreaForm(string A){
+    areaForm = A;
+}
+void Presidente::setNivelFormacao(string N){
+    nivelFormacao = N;
+}
