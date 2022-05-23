@@ -12,6 +12,14 @@ Presidente::~Presidente(){
 
 }
 
+void Presidente::concederAumento(){
+    double salario;
+    
+    salario = getSalario()*1.30;
+
+    setSalario(salario);
+}
+
 string Presidente::getAreaForm(){
     return areaForm;
 }

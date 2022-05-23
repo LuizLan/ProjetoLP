@@ -16,7 +16,7 @@ int main(){
     double salario;
     int tipo;
     
-    int menu;
+    int menu, menuPesq;
 
     while (1){
         cout << "______MENU______" << endl << endl;
@@ -52,16 +52,27 @@ int main(){
 
             break;
         case 3:
+            gerenciador.excluirFuncionario();
 
             break;
         case 4:
-            gerenciador.exibirFuncionarios();
+            gerenciador.exibirTodosFuncionarios();
             break;
         case 5:
-            
+            cout << "Digite como você deseja buscar o funcionario: " << endl <<
+                    "1 - Nome: " << endl <<
+                    "2 - Data de ingresso: " << endl <<
+                    "3 - Endereco" << endl;
+            cin >> menuPesq;
+            cin.ignore();
+
+            gerenciador.buscarFuncionario(menuPesq);
+
             break;
         case 6:
-            
+            gerenciador.concederAumento();
+            cout << "Aumento concedido para todos os funcionarios" << endl;
+
             break;
         case 7:
             

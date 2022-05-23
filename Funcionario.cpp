@@ -63,7 +63,7 @@ void Funcionario::setDataIni(string D){
 void Funcionario::setDesignacao(string D){
     designacao = D;
 }
-void Funcionario::setSalario(float S){
+void Funcionario::setSalario(double S){
     salario = S;
 }
 

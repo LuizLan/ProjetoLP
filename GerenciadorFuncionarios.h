@@ -16,8 +16,14 @@ public:
     
     int editarFuncionario();
 
-    void exibirFuncionarios();
+    int excluirFuncionario();
 
+    void exibirFuncionario(int indice);
+    void exibirTodosFuncionarios();
+
+    void buscarFuncionario(int menu);
+
+    void concederAumento();
 
 protected:
 

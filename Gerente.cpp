@@ -17,3 +17,11 @@ string Gerente::getAreaSup(){
 void Gerente::setAreaSup(string A){
     areaSup = A;
 }
+
+void Gerente::concederAumento(){
+    double salario;
+    
+    salario = getSalario()*1.10;
+
+    setSalario(salario);
+}

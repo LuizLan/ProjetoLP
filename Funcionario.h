@@ -14,6 +14,8 @@ public:
     Funcionario(int tipo,string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario); //construtor base para adicionar funcionarios
     ~Funcionario();
 
+    virtual void concederAumento() = 0;
+
     int getTipo();
     string getCodigo();
     string getNome();
@@ -30,7 +32,7 @@ public:
     void setTelefone(string T);
     void setDataIni(string D);
     void setDesignacao(string D);
-    void setSalario(float S);
+    void setSalario(double S);
 
     virtual string getAreaSup();
     virtual string getAreaForm();

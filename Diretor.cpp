@@ -12,6 +12,14 @@ Diretor::~Diretor(){
 
 }
 
+void Diretor::concederAumento(){
+    double salario;
+    
+    salario = getSalario()*1.20;
+
+    setSalario(salario);
+}
+
 string Diretor::getAreaSup(){
     return areaSup;
 }
