@@ -46,7 +46,7 @@ int main(){
             cin.ignore();
 
             gerenciador.cadastrarFuncionario(tipo);
-            break;    
+            break;
         case 2:
             gerenciador.editarFuncionario();
 
@@ -77,15 +77,16 @@ int main(){
         case 7:
             
             break;
+        case 8:
+
+            break;
         case 0:
             cout << "saindo..." << endl;
             return 1;
         default:
-
+            cout << "Opção inválida, insira um valor de 1 a 8." << endl;
             break;
         }
-
     }
-
     return 1;
 }

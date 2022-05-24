@@ -9,6 +9,10 @@ GerenciadorFuncionarios::~GerenciadorFuncionarios(){
 
 }
 
+vector<Funcionario*> GerenciadorFuncionarios::getListaFuncionarios(){
+    return listaFuncionarios;
+}
+
 int GerenciadorFuncionarios::cadastrarFuncionario(int tipo){// função que recebe o tipo do funcionario e lê os dados do funcionario que vai ser cadastrado, chamando o construtor depndendo do tipo de funcionario
     string codigo, nome, endereco, telefone, dataIni, areaSup, areaForm, nivelFormacao;
     double salario;

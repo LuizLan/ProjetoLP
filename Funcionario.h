@@ -1,7 +1,9 @@
 #include<iostream>
-#include<string>
-#include<vector>
-#include<stdlib.h>
+#include<string> //string
+#include<vector> //vetor
+#include<stdlib.h> //
+#include<cstdlib> // num aleatorio
+#include<ctime> //tempo
 
 #pragma once
 

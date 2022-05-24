@@ -25,6 +25,8 @@ public:
 
     void concederAumento();
 
+    vector<Funcionario*> getListaFuncionarios();
+
 protected:
 
 private:
