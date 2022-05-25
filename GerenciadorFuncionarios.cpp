@@ -13,9 +13,18 @@ vector<Funcionario*> GerenciadorFuncionarios::getListaFuncionarios(){
     return listaFuncionarios;
 }
 
-int GerenciadorFuncionarios::cadastrarFuncionario(int tipo){// função que recebe o tipo do funcionario e lê os dados do funcionario que vai ser cadastrado, chamando o construtor depndendo do tipo de funcionario
+int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tipo do funcionario e lê os dados do funcionario que vai ser cadastrado, chamando o construtor depndendo do tipo de funcionario
     string codigo, nome, endereco, telefone, dataIni, areaSup, areaForm, nivelFormacao;
     double salario;
+    int tipo;
+    
+    cout << "Digite o tipo do Funcionario: "<< endl <<
+            "1 - operario." << endl <<
+            "2 - gerente." << endl <<
+            "3 - diretor." << endl << 
+            "4 - presidente." << endl;
+    cin >> tipo;
+    cin.ignore();
 
     if(tipo==0){
         cout << "Tipo inválido" << endl;
@@ -268,34 +277,6 @@ void GerenciadorFuncionarios::exibirTodosFuncionarios(){ //função que exibe to
     for (int i = 0; i < listaFuncionarios.size(); i++){
 
         exibirFuncionario(i);
-
-        /*cout << "Codigo do funcionario: " << listaFuncionarios.at(i)->getCodigo() << endl <<
-                "Nome: " << listaFuncionarios.at(i)->getNome() << endl <<
-                "Endereço: " << listaFuncionarios.at(i)->getEndereco() << endl <<
-                "Telefone : " << listaFuncionarios.at(i)->getTelefone() << endl <<
-                "Data de ingresso: " << listaFuncionarios.at(i)->getDataIni() << endl <<
-                "Designação: " << listaFuncionarios.at(i)->getDesignacao() << endl <<
-                "Salario: " << endl;
-
-        switch (listaFuncionarios.at(i)->getTipo()){
-        case 1:
-            
-            break;
-        case 2:
-            cout << "Area de supervisão: " << listaFuncionarios.at(i)->getAreaSup();
-            break;
-        case 3:
-            cout << "Area de supervisão: " << listaFuncionarios.at(i)->getAreaSup();
-            cout << "Area de formação: " << listaFuncionarios.at(i)->getAreaForm();
-            break;
-        case 4:
-            cout << "Area de formação: " << listaFuncionarios.at(i)->getAreaForm();
-            cout << "Nivel de formação: " << listaFuncionarios.at(i)->getNivelFormacao();
-            break;    
-        default:
-            cout << "Erro-Tipo do funcionario exibido" << endl;
-            break;
-        }*/
     }
 }
 
@@ -417,4 +398,101 @@ void GerenciadorFuncionarios::concederAumento(){
     for (int i = 0; i < listaFuncionarios.size(); i++){
         listaFuncionarios.at(i)->concederAumento();
     }
+}
+
+void GerenciadorFuncionarios::calcularFolhaDePagamento(int mes){
+    if (folhasFeitas[mes-1] != 0){
+        return;
+    }
+
+    int horaExtra, diasTrab;
+    double salTotal;
+
+    srand(time(0));
+
+    for (int i = 0; i < listaFuncionarios.size(); i++){
+        diasTrab = rand();
+
+        if (rand()%2 == 0){ //50% de chance dele ter trabalhado hora extra
+            salTotal = listaFuncionarios.at(i)->getSalario()*8*diasTrab; // trabalha 8 horas por dia nos dias trabalhados
+        }else{
+            horaExtra = rand()%39 + 1; // calcular o tanto de horas extras trabalhadas
+
+            salTotal = (listaFuncionarios.at(i)->getSalario()*8*diasTrab) + (listaFuncionarios.at(i)->getSalario()*horaExtra*2); //somar o solario do mês mais o salario extra das horas trabalhadas
+        }
+        listaFuncionarios.at(i)->setFolhaDePagamentoMes(salTotal, mes-1);
+    }
+    folhasFeitas[mes-1]++;
+}
+
+void GerenciadorFuncionarios::exibirFolhaDePagamento(){
+    int menu, menuInter, mes;
+    string codigo;
+
+    cout << "Voce deseja exibir a folha salarial:" << endl <<
+            "1 - De um funcionario" << endl <<
+            "2 - Da empresa" << endl;
+    cin >> menu;
+    cin.ignore();
+
+    switch (menu){
+    case 1:
+        cout << "Insira o codigo do funcionario: ";
+        getline(cin, codigo);
+        
+        cout << "Digite: " << endl <<
+                "1 - Para a folha de pagamento mensal" << endl <<
+                "2 - para a folha de pagamento anual" << endl;
+        cin >> menuInter;
+        cin.ignore();
+
+        switch (menuInter){
+        case 1:
+            cout << "Insira o mes que devera ser impresso: ";
+            cin >> mes;
+            cin.ignore();
+
+            calcularFolhaDePagamento(mes);
+
+            for (int i = 0; i < listaFuncionarios.size(); i++){
+                if (listaFuncionarios.at(i)->getCodigo() == codigo){
+                    cout << "Pagamento do funcionario " << listaFuncionarios.at(i)->getNome() << " de codigo: " << listaFuncionarios.at(i)->getCodigo() << endl <<
+                    "Pagamento do mes "<< mes << ": " << listaFuncionarios.at(i)->getFolhaDePagamentoMes().at(i);
+                }
+            }
+            break;
+        case 2:
+            double salarioAno;
+            
+            salarioAno = 0;
+
+            for (int i = 0; i < listaFuncionarios.size(); i++){
+                if (listaFuncionarios.at(i)->getCodigo() == codigo){
+                    for (int i = 1; i <= 12; i++){
+                        calcularFolhaDePagamento(i);
+                        salarioAno = listaFuncionarios.at(i)->getFolhaDePagamentoMes().at(i);
+                    }
+                    cout << "Pagamento do funcionario " << listaFuncionarios.at(i)->getNome() << " de codigo: " << listaFuncionarios.at(i)->getCodigo() << endl <<
+                    "Pagamento do ano: " << salarioAno;
+                }
+            }
+            break;
+        default:
+            cout << "Opcao invalida" << endl;
+            break;
+        }
+
+        break;
+    case 2:
+        cout << "Digite: " << endl <<
+                "1 - Para a folha de pagamento mensal" << endl <<
+                "2 - para a folha de pagamento anual" << endl;
+        cin >> menuInter;
+        cin.ignore();
+
+        break;
+    default:
+        break;
+    }
+
 }

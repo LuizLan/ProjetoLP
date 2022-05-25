@@ -8,15 +8,11 @@
 using namespace std;
 
 int main(){
-    
     int i;
-
-    GerenciadorFuncionarios gerenciador;
-    string codigo, nome, endereco, telefone, dataIni, designacao;
-    double salario;
-    int tipo;
+    int menu, menuPesq, menuFolha;
     
-    int menu, menuPesq;
+    GerenciadorFuncionarios gerenciador;
+
 
     while (1){
         cout << "______MENU______" << endl << endl;
@@ -27,8 +23,7 @@ int main(){
                 "4 - Exibir todos os funcionarios." << endl <<
                 "5 - Buscar funcionario." << endl <<
                 "6 - Conceder aumento." << endl <<
-                "7 - Calcular folha salarial" << endl <<
-                "8 - Exibir folha salarial" << endl <<
+                "7 - Exibir folha salarial" << endl <<
                 "0 - Sair do programa" << endl;
 
         cin >> menu;
@@ -36,16 +31,8 @@ int main(){
 
         switch (menu){
         case 1:
-            cout << "Digite o tipo do Funcionario: "<< endl <<
-                    "1 - operario." << endl <<
-                    "2 - gerente." << endl <<
-                    "3 - diretor." << endl << 
-                    "4 - presidente." << endl;
 
-            cin >> tipo;
-            cin.ignore();
-
-            gerenciador.cadastrarFuncionario(tipo);
+            gerenciador.cadastrarFuncionario();
             break;
         case 2:
             gerenciador.editarFuncionario();
@@ -75,6 +62,7 @@ int main(){
 
             break;
         case 7:
+            gerenciador.exibirFolhaDePagamento();
             
             break;
         case 8:

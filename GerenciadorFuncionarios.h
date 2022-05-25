@@ -12,24 +12,23 @@ public:
     GerenciadorFuncionarios();
     virtual ~GerenciadorFuncionarios();
 
-    int cadastrarFuncionario(int tipo);
-    
-    int editarFuncionario();
+    vector<Funcionario*> getListaFuncionarios();
 
+    int cadastrarFuncionario();    
+    int editarFuncionario();
     int excluirFuncionario();
 
     void exibirFuncionario(int indice);
     void exibirTodosFuncionarios();
-
     void buscarFuncionario(int menu);
 
     void concederAumento();
-
-    vector<Funcionario*> getListaFuncionarios();
+    void calcularFolhaDePagamento(int mes);
+    void exibirFolhaDePagamento();
 
 protected:
 
 private:
     vector<Funcionario*> listaFuncionarios;
-
+    int folhasFeitas[15] = {};
 };

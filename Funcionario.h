@@ -26,6 +26,7 @@ public:
     string getDataIni();
     string getDesignacao();
     double getSalario();
+    vector<double> getFolhaDePagamentoMes();
 
     void setTipo(int T);
     void setCodigo(string C);
@@ -35,6 +36,7 @@ public:
     void setDataIni(string D);
     void setDesignacao(string D);
     void setSalario(double S);
+    void setFolhaDePagamentoMes(double S, int M);
 
     virtual string getAreaSup();
     virtual string getAreaForm();
@@ -49,4 +51,5 @@ private:
     double salario;
     int tipo;
 
+    vector<double> folhaDePagamentoMes = vector<double>(15);
 };
