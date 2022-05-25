@@ -399,6 +399,7 @@ void GerenciadorFuncionarios::concederAumento(){
         listaFuncionarios.at(i)->concederAumento();
     }
 }
+//---------------------------------------------------------ZONA DA FOLHA DE PAGAMENTO NÃO FINALIZADO-----------------------------------------------------------------------------------
 
 void GerenciadorFuncionarios::calcularFolhaDePagamento(int mes){
     if (folhasFeitas[mes-1] != 0){
