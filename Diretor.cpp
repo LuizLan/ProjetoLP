@@ -12,11 +12,3 @@ Funcionario(3, codigo, nome, endereco, telefone, dataIni, designacao, salario){
 Diretor::~Diretor(){
 
 }
-
-void Diretor::concederAumento(){
-    double salario;
-    
-    salario = getSalario()*1.20;
-
-    setSalario(salario);
-}

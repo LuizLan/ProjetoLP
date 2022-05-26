@@ -41,8 +41,8 @@ string Funcionario::getDesignacao(){
 double Funcionario::getSalario(){
     return salario;
 }
-vector<double> Funcionario::getFolhaDePagamentoMes(){
-    return folhaDePagamentoMes;
+vector<double> Funcionario::getPagamentoMes(){
+    return pagamentoMes;
 }
 
 void Funcionario::setTipo(int T){
@@ -69,8 +69,8 @@ void Funcionario::setDesignacao(string D){
 void Funcionario::setSalario(double S){
     salario = S;
 }
-void Funcionario::setFolhaDePagamentoMes(double S, int M){
-    folhaDePagamentoMes.at(M) = S;
+void Funcionario::setPagamentoMes(double S, int M){
+    pagamentoMes.at(M) = S;
 }
 
 string Funcionario::getAreaSup(){
@@ -92,4 +92,35 @@ void Funcionario::setAreaForm(string A){
 }
 void Funcionario::setNivelFormacao(string N){
     nivelFormacao = N;
+}
+
+void Funcionario::concederAumento(){
+    double salario;
+
+    switch (tipo){
+
+    case 1:
+        salario = getSalario()*1.05;
+
+        setSalario(salario);
+        break;
+    case 2:
+        salario = getSalario()*1.10;
+
+        setSalario(salario);
+        break;
+    case 3:
+        salario = getSalario()*1.20;
+
+        setSalario(salario);
+        break;
+    case 4:
+        salario = getSalario()*1.30;
+
+        setSalario(salario);
+        break;    
+    default:
+    
+        break;
+    }
 }

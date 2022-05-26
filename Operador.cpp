@@ -12,11 +12,3 @@ Funcionario(1, codigo, nome, endereco, telefone, dataIni, designacao, salario){
 Operador::~Operador(){
 
 }
-
-void Operador::concederAumento(){
-    double salario;
-    
-    salario = getSalario()*1.05;
-
-    setSalario(salario);
-}

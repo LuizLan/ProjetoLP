@@ -492,7 +492,7 @@ void GerenciadorFuncionarios::calcularFolhaDePagamento(int mes){
 
             salTotal = (listaFuncionarios.at(i)->getSalario()*8*diasTrab) + (listaFuncionarios.at(i)->getSalario()*horaExtra*2); //somar o solario do mês mais o salario extra das horas trabalhadas
         }
-        listaFuncionarios.at(i)->setFolhaDePagamentoMes(salTotal, mes-1);
+        listaFuncionarios.at(i)->setPagamentoMes(salTotal, mes-1);
     }
     folhasFeitas[mes-1]++;
 }
@@ -529,7 +529,7 @@ void GerenciadorFuncionarios::exibirFolhaDePagamento(){
             for (int i = 0; i < listaFuncionarios.size(); i++){
                 if (listaFuncionarios.at(i)->getCodigo() == codigo){
                     cout << "Pagamento do funcionario " << listaFuncionarios.at(i)->getNome() << " de codigo: " << listaFuncionarios.at(i)->getCodigo() << endl <<
-                    "Pagamento do mes "<< mes << ": " << listaFuncionarios.at(i)->getFolhaDePagamentoMes().at(i);
+                    "Pagamento do mes "<< mes << ": " << listaFuncionarios.at(i)->getPagamentoMes().at(i);
                 }
             }
             break;
@@ -542,7 +542,7 @@ void GerenciadorFuncionarios::exibirFolhaDePagamento(){
                 if (listaFuncionarios.at(i)->getCodigo() == codigo){
                     for (int i = 1; i <= 12; i++){
                         calcularFolhaDePagamento(i);
-                        salarioAno = listaFuncionarios.at(i)->getFolhaDePagamentoMes().at(i);
+                        salarioAno = listaFuncionarios.at(i)->getPagamentoMes().at(i);
                     }
                     cout << "Pagamento do funcionario " << listaFuncionarios.at(i)->getNome() << " de codigo: " << listaFuncionarios.at(i)->getCodigo() << endl <<
                     "Pagamento do ano: " << salarioAno;
