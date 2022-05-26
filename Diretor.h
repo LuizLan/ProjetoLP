@@ -17,5 +17,4 @@ public:
     void setAreaForm(string A);
 
 private:
-    string areaSup, areaForm;
 };

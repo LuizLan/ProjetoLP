@@ -15,5 +15,4 @@ public:
     void setAreaSup(string A);
 
 private:
-    string areaSup;
 };

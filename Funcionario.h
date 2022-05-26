@@ -38,18 +38,20 @@ public:
     void setSalario(double S);
     void setFolhaDePagamentoMes(double S, int M);
 
-    virtual string getAreaSup();
-    virtual string getAreaForm();
-    virtual string getNivelFormacao();
-    virtual void setAreaSup(string A);
-    virtual void setAreaForm(string A);
-    virtual void setNivelFormacao(string N);
+    string getAreaSup();
+    string getAreaForm();
+    string getNivelFormacao();
+    void setAreaSup(string A);
+    void setAreaForm(string A);
+    void setNivelFormacao(string N);
 
-private:
-
-    string codigo, nome, endereco, telefone, dataIni, designacao;
+protected:
+    string codigo, nome, endereco, telefone, dataIni, designacao, areaSup, areaForm, nivelFormacao;
     double salario;
     int tipo;
 
     vector<double> folhaDePagamentoMes = vector<double>(15);
+
+private:
+
 };

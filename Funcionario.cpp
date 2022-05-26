@@ -73,10 +73,23 @@ void Funcionario::setFolhaDePagamentoMes(double S, int M){
     folhaDePagamentoMes.at(M) = S;
 }
 
-string Funcionario::getAreaSup(){}
-string Funcionario::getAreaForm(){}
-string Funcionario::getNivelFormacao(){}
+string Funcionario::getAreaSup(){
+    return areaSup;
+}
+string Funcionario::getAreaForm(){
+    return areaForm;
+}
+string Funcionario::getNivelFormacao(){
+    return nivelFormacao;
+}
 
-void Funcionario::setAreaSup(string A){}
-void Funcionario::setAreaForm(string A){}
-void Funcionario::setNivelFormacao(string N){}
+
+void Funcionario::setAreaSup(string A){
+    areaSup = A;
+}
+void Funcionario::setAreaForm(string A){
+    areaForm = A;
+}
+void Funcionario::setNivelFormacao(string N){
+    nivelFormacao = N;
+}

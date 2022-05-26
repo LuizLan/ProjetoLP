@@ -17,5 +17,4 @@ public:
     void setNivelFormacao(string N);
 
 private:
-    string areaForm, nivelFormacao;
 };
