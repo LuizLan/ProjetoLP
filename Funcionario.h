@@ -1,8 +1,7 @@
-#include<iostream>
+#include<iostream> //biblioteca padrao
 #include<string> //string
 #include<vector> //vetor
-#include<stdlib.h> //
-#include<cstdlib> // num aleatorio
+#include<cstdlib> //num aleatorio
 #include<ctime> //tempo
 
 #pragma once
@@ -18,7 +17,7 @@ public:
 
     virtual void concederAumento() = 0;
 
-    int getTipo();
+    int getTipo(); //funções get
     string getCodigo();
     string getNome();
     string getEndereco();
@@ -26,9 +25,8 @@ public:
     string getDataIni();
     string getDesignacao();
     double getSalario();
-    vector<double> getPagamentoMes();
 
-    void setTipo(int T);
+    void setTipo(int T); //funcções set
     void setCodigo(string C);
     void setNome(string N);
     void setEndereco(string E);
@@ -36,9 +34,8 @@ public:
     void setDataIni(string D);
     void setDesignacao(string D);
     void setSalario(double S);
-    void setPagamentoMes(double S, int M);
 
-    virtual string getAreaSup();
+    virtual string getAreaSup(); //funcções get e set especificas para gerente+
     virtual string getAreaForm();
     virtual string getNivelFormacao();
     virtual void setAreaSup(string A);
@@ -46,11 +43,9 @@ public:
     virtual void setNivelFormacao(string N);
 
 protected:
-    string codigo, nome, endereco, telefone, dataIni, designacao;
+    string codigo, nome, endereco, telefone, dataIni, designacao; // dataIni = data inicialização, designação = operador, gerente, diretor, presidente
     double salario;
-    int tipo;
-
-    vector<double> pagamentoMes = vector<double>(15);
+    int tipo; // 1 = operador,2 = gerente,3 = diretor,4 = presidente
 
 private:
 

@@ -9,7 +9,7 @@ using namespace std;
 
 int main(){
     int i;
-    int menu, menuPesq, menuFolha;
+    int menu, menuFolha;
     
     GerenciadorFuncionarios gerenciador;
 
@@ -46,15 +46,7 @@ int main(){
             gerenciador.exibirTodosFuncionarios();
             break;
         case 5:
-            cout << "Digite como você deseja buscar o funcionario: " << endl <<
-                    "1 - Nome: " << endl <<
-                    "2 - Data de ingresso: " << endl <<
-                    "3 - Endereco" << endl;
-            cin >> menuPesq;
-            cin.ignore();
-
-            gerenciador.buscarFuncionario(menuPesq);
-
+            gerenciador.buscarFuncionario();
             break;
         case 6:
             gerenciador.concederAumento();

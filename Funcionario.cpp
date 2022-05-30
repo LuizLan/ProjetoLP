@@ -41,9 +41,6 @@ string Funcionario::getDesignacao(){
 double Funcionario::getSalario(){
     return salario;
 }
-vector<double> Funcionario::getPagamentoMes(){
-    return pagamentoMes;
-}
 
 void Funcionario::setTipo(int T){
     tipo = T;
@@ -68,9 +65,6 @@ void Funcionario::setDesignacao(string D){
 }
 void Funcionario::setSalario(double S){
     salario = S;
-}
-void Funcionario::setPagamentoMes(double S, int M){
-    pagamentoMes.at(M) = S;
 }
 
 string Funcionario::getAreaSup(){

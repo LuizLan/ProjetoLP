@@ -17,5 +17,5 @@ public:
     void setNivelFormacao(string N);
 
 private:
-    string areaForm, nivelFormacao;
+    string areaForm, nivelFormacao; // areaForm = area de formação, nivelFormação = nivel de formação
 };

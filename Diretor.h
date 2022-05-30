@@ -17,5 +17,5 @@ public:
     void setAreaForm(string A);
 
 private:
-    string areaSup, areaForm;
+    string areaSup, areaForm; // areaSup = area de supervisao, areaForm = area de formação
 };

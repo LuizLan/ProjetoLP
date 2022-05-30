@@ -20,7 +20,7 @@ public:
 
     void exibirFuncionario(int indice);
     void exibirTodosFuncionarios();
-    void buscarFuncionario(int menu);
+    void buscarFuncionario();
 
     void concederAumento();
     
