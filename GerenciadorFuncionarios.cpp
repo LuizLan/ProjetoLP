@@ -1,5 +1,6 @@
 #include "GerenciadorFuncionarios.h"
 #include<exception>
+#include<iostream>
 
 GerenciadorFuncionarios::GerenciadorFuncionarios(){
 
@@ -126,9 +127,8 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
 
 int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do funcionario e entra no menu de edição para aquele funcionario,
                                                   //podendo mudar codigo, data de ingresso, nome, endereço, telefone, designação e salario;
-    string codigo, mudanca;
-    string tipo;
-    float salario;
+    string tipo, codigo, nome, endereco, telefone, dataIni, designacao, areaSup, areaForm, nivelFormacao;
+    double salario;
     int menu, indice, achado = 0;
     int tipoFuncionario;
 
@@ -170,35 +170,37 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
             switch (menu){
             case 1:
                 cout << "Insira o novo código: ";
-                getline(cin, mudanca);
+                getline(cin, codigo);
 
-                listaFuncionarios.at(indice)->setCodigo(mudanca);
+                listaFuncionarios.at(indice)->setCodigo(codigo);
+                cout << "Edição concluida com sucesso" << endl;
                 break;
             case 2:
                 cout << "Insira a nova data de Ingresso: ";
-                getline(cin,mudanca);
+                getline(cin,dataIni);
 
-                listaFuncionarios.at(indice)->setDataIni(mudanca);
+                listaFuncionarios.at(indice)->setDataIni(dataIni);
+                cout << "Edição concluida com sucesso" << endl;
                 break;
             case 3:
                 cout << "Insira o novo nome: ";
-                getline(cin,mudanca);
+                getline(cin,nome);
 
-                listaFuncionarios.at(indice)->setNome(mudanca);
-
+                listaFuncionarios.at(indice)->setNome(nome);
+                cout << "Edição concluida com sucesso" << endl;
                 break;
             case 4:
                 cout << "Insira o novo endereço: ";
-                getline(cin,mudanca);
+                getline(cin,endereco);
 
-                listaFuncionarios.at(indice)->setEndereco(mudanca);
-
+                listaFuncionarios.at(indice)->setEndereco(endereco);
+                cout << "Edição concluida com sucesso" << endl;
                 break;
             case 5:
                 cout << "Insira o novo numero: ";
-                getline(cin,mudanca);
+                getline(cin,telefone);
 
-                listaFuncionarios.at(indice)->setTelefone(mudanca);
+                listaFuncionarios.at(indice)->setTelefone(telefone);
                 break;
             case 6:
                 while(1){
@@ -209,7 +211,6 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                                 "3 - diretor." << endl <<
                                 "4 - presidente." << endl;
                         getline(cin, tipo);
-
                         try{
                             VerificaSeTemLetras(tipo);
                             tipoFuncionario = stoi(tipo);
@@ -223,58 +224,69 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                             std::cout << e.what() << endl;
                             saiu = false;
                         }
-
                     if(saiu){
                         break;
                     }
                 }
 
                 listaFuncionarios.at(indice)->setTipo(tipoFuncionario);
+                codigo = listaFuncionarios.at(indice)->getCodigo();
+                nome = listaFuncionarios.at(indice)->getNome();
+                endereco = listaFuncionarios.at(indice)->getEndereco();
+                telefone = listaFuncionarios.at(indice)->getTelefone();
+                dataIni = listaFuncionarios.at(indice)->getDataIni();
+                salario = listaFuncionarios.at(indice)->getSalario();
 
                 switch (tipoFuncionario){
 
                 case 1:
-                    listaFuncionarios.at(indice)->setDesignacao("Operario");
-                    break;
+                    listaFuncionarios.erase(listaFuncionarios.begin()+indice);
+                    listaFuncionarios.push_back(new Operador(codigo, nome, endereco, telefone, dataIni, "Operario", salario));
+                    cout << "Edição concluida com sucesso" << endl;
+                    return 1;
                 case 2:
                     listaFuncionarios.at(indice)->setDesignacao("Gerente");
                     cout << "Insira area de supervisão: ";
-                    getline(cin,mudanca);
+                    getline(cin,areaSup);
 
-                    listaFuncionarios.at(indice)->setAreaSup(mudanca);
-                    break;
+                    listaFuncionarios.erase(listaFuncionarios.begin()+indice);
+                    listaFuncionarios.push_back(new Gerente(codigo, nome, endereco, telefone, dataIni, "Gerente", salario, areaSup));
+                    cout << "Edição concluida com sucesso" << endl;
+                    return 2;
                 case 3:
                     listaFuncionarios.at(indice)->setDesignacao("Diretor");
                     cout << "Insira area de supervisão: ";
-                    getline(cin,mudanca);
-                    listaFuncionarios.at(indice)->setAreaSup(mudanca);
-
+                    getline(cin,areaSup);
                     cout << "Insira area de formação: ";
-                    getline(cin,mudanca);
-                    listaFuncionarios.at(indice)->setAreaForm(mudanca);
-                    break;
+                    getline(cin,areaForm);
+
+                    listaFuncionarios.erase(listaFuncionarios.begin()+indice);
+                    listaFuncionarios.push_back(new Diretor(codigo, nome, endereco, telefone, dataIni, "Diretor", salario, areaSup, areaForm));
+                    cout << "Edição concluida com sucesso" << endl;
+                    return 3;
                 case 4:
                     listaFuncionarios.at(indice)->setDesignacao("Presidente");
                     cout << "Insira area de formação: ";
-                    getline(cin,mudanca);
-                    listaFuncionarios.at(indice)->setAreaForm(mudanca);
+                    getline(cin,areaForm);
 
                     cout << "Insira nivel de formação: ";
-                    getline(cin,mudanca);
-                    listaFuncionarios.at(indice)->setNivelFormacao(mudanca);
-                    break;
-                    break;
+                    getline(cin,nivelFormacao);
+                    listaFuncionarios.erase(listaFuncionarios.begin()+indice);
+                    listaFuncionarios.push_back(new Presidente(codigo, nome, endereco, telefone, dataIni, "Presidente", salario, areaForm, nivelFormacao));
+                    cout << "Edição concluida com sucesso" << endl;
+                    return 4;
                 default:
                     cout << "Erro - Designação imprópria" << endl;
                     break;
                 }
 
-                break;
+            break;
             case 7:
                 cout << "Insira o novo salario: ";
                 cin >> salario;
 
                 listaFuncionarios.at(indice)->setSalario(salario);
+                cout << "Edição concluida com sucesso" << endl;
                 break;
             case 0:
                 cout << "Saindo da edição de funcionario..." << endl;
@@ -469,102 +481,4 @@ void GerenciadorFuncionarios::concederAumento(){
     for (int i = 0; i < listaFuncionarios.size(); i++){
         listaFuncionarios.at(i)->concederAumento();
     }
-}
-//---------------------------------------------------------ZONA DA FOLHA DE PAGAMENTO NÃO FINALIZADO-----------------------------------------------------------------------------------
-
-void GerenciadorFuncionarios::calcularFolhaDePagamento(int mes){
-    if (folhasFeitas[mes-1] != 0){
-        return;
-    }
-
-    int horaExtra, diasTrab;
-    double salTotal;
-
-    srand(time(0));
-
-    for (int i = 0; i < listaFuncionarios.size(); i++){
-        diasTrab = rand();
-
-        if (rand()%2 == 0){ //50% de chance dele ter trabalhado hora extra
-            salTotal = listaFuncionarios.at(i)->getSalario()*8*diasTrab; // trabalha 8 horas por dia nos dias trabalhados
-        }else{
-            horaExtra = rand()%39 + 1; // calcular o tanto de horas extras trabalhadas
-
-            salTotal = (listaFuncionarios.at(i)->getSalario()*8*diasTrab) + (listaFuncionarios.at(i)->getSalario()*horaExtra*2); //somar o solario do mês mais o salario extra das horas trabalhadas
-        }
-        listaFuncionarios.at(i)->setPagamentoMes(salTotal, mes-1);
-    }
-    folhasFeitas[mes-1]++;
-}
-
-void GerenciadorFuncionarios::exibirFolhaDePagamento(){
-    int menu, menuInter, mes;
-    string codigo;
-
-    cout << "Voce deseja exibir a folha salarial:" << endl <<
-            "1 - De um funcionario" << endl <<
-            "2 - Da empresa" << endl;
-    cin >> menu;
-    cin.ignore();
-
-    switch (menu){
-    case 1:
-        cout << "Insira o codigo do funcionario: ";
-        getline(cin, codigo);
-
-        cout << "Digite: " << endl <<
-                "1 - Para a folha de pagamento mensal" << endl <<
-                "2 - para a folha de pagamento anual" << endl;
-        cin >> menuInter;
-        cin.ignore();
-
-        switch (menuInter){
-        case 1:
-            cout << "Insira o mes que devera ser impresso: ";
-            cin >> mes;
-            cin.ignore();
-
-            calcularFolhaDePagamento(mes);
-
-            for (int i = 0; i < listaFuncionarios.size(); i++){
-                if (listaFuncionarios.at(i)->getCodigo() == codigo){
-                    cout << "Pagamento do funcionario " << listaFuncionarios.at(i)->getNome() << " de codigo: " << listaFuncionarios.at(i)->getCodigo() << endl <<
-                    "Pagamento do mes "<< mes << ": " << listaFuncionarios.at(i)->getPagamentoMes().at(i);
-                }
-            }
-            break;
-        case 2:
-            double salarioAno;
-
-            salarioAno = 0;
-
-            for (int i = 0; i < listaFuncionarios.size(); i++){
-                if (listaFuncionarios.at(i)->getCodigo() == codigo){
-                    for (int i = 1; i <= 12; i++){
-                        calcularFolhaDePagamento(i);
-                        salarioAno = listaFuncionarios.at(i)->getPagamentoMes().at(i);
-                    }
-                    cout << "Pagamento do funcionario " << listaFuncionarios.at(i)->getNome() << " de codigo: " << listaFuncionarios.at(i)->getCodigo() << endl <<
-                    "Pagamento do ano: " << salarioAno;
-                }
-            }
-            break;
-        default:
-            cout << "Opcao invalida" << endl;
-            break;
-        }
-
-        break;
-    case 2:
-        cout << "Digite: " << endl <<
-                "1 - Para a folha de pagamento mensal" << endl <<
-                "2 - para a folha de pagamento anual" << endl;
-        cin >> menuInter;
-        cin.ignore();
-
-        break;
-    default:
-        break;
-    }
-
 }

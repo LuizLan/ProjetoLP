@@ -62,7 +62,7 @@ int main(){
 
             break;
         case 7:
-            gerenciador.exibirFolhaDePagamento();
+        
             
             break;
         case 8:

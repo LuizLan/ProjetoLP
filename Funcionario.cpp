@@ -74,53 +74,22 @@ void Funcionario::setPagamentoMes(double S, int M){
 }
 
 string Funcionario::getAreaSup(){
-    return areaSup;
+    
 }
 string Funcionario::getAreaForm(){
-    return areaForm;
+    
 }
 string Funcionario::getNivelFormacao(){
-    return nivelFormacao;
+    
 }
 
 
 void Funcionario::setAreaSup(string A){
-    areaSup = A;
+    
 }
 void Funcionario::setAreaForm(string A){
-    areaForm = A;
+    
 }
 void Funcionario::setNivelFormacao(string N){
-    nivelFormacao = N;
-}
-
-void Funcionario::concederAumento(){
-    double salario;
-
-    switch (tipo){
-
-    case 1:
-        salario = getSalario()*1.05;
-
-        setSalario(salario);
-        break;
-    case 2:
-        salario = getSalario()*1.10;
-
-        setSalario(salario);
-        break;
-    case 3:
-        salario = getSalario()*1.20;
-
-        setSalario(salario);
-        break;
-    case 4:
-        salario = getSalario()*1.30;
-
-        setSalario(salario);
-        break;    
-    default:
     
-        break;
-    }
 }

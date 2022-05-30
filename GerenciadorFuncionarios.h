@@ -23,12 +23,11 @@ public:
     void buscarFuncionario(int menu);
 
     void concederAumento();
-    void calcularFolhaDePagamento(int mes);
-    void exibirFolhaDePagamento();
+    
 
 protected:
 
 private:
     vector<Funcionario*> listaFuncionarios;
-    int folhasFeitas[15] = {};
+    
 };
