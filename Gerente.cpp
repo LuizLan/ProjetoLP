@@ -3,8 +3,8 @@
 Gerente::Gerente(){
 
 }
-Gerente::Gerente(string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario, string areaSup):
-Funcionario(2, codigo, nome, endereco, telefone, dataIni, designacao, salario){
+Gerente::Gerente(string codigo, string nome, string CEP, string numeroCasa, string telefone, string dataIni, string designacao, double salario, string areaSup):
+Funcionario(2, codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, salario){
     this->areaSup = areaSup;
 }
 Gerente::~Gerente(){

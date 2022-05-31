@@ -3,11 +3,11 @@
 Funcionario::Funcionario(){
 
 }
-Funcionario::Funcionario(int tipo,string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario){
+Funcionario::Funcionario(int tipo,string codigo, string nome, string CEP, string numeroCasa, string telefone, string dataIni, string designacao, double salario){
     this -> tipo = tipo;
     this->codigo = codigo;
     this->nome = nome;
-    this->endereco = endereco;
+    this->CEP = CEP;
     this->telefone=telefone;
     this->dataIni = dataIni;
     this->designacao = designacao;
@@ -26,8 +26,11 @@ string Funcionario::getCodigo(){
 string Funcionario::getNome(){
     return nome;
 }
-string Funcionario::getEndereco(){
-    return endereco;
+string Funcionario::getCEP(){
+    return CEP;
+}
+string Funcionario::getNumeroCasa(){
+    return numeroCasa;
 }
 string Funcionario::getTelefone(){
     return telefone;
@@ -51,8 +54,11 @@ void Funcionario::setCodigo(string C){
 void Funcionario::setNome(string N){
     nome = N;
 }
-void Funcionario::setEndereco(string E){
-    endereco = E;
+void Funcionario::setCEP(string C){
+    CEP = C;
+}
+void Funcionario::setNumeroCasa(string N){
+    numeroCasa = N;
 }
 void Funcionario::setTelefone(string T){
     telefone = T;

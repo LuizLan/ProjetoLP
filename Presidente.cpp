@@ -3,8 +3,8 @@
 Presidente::Presidente(){
 
 }
-Presidente::Presidente(string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario, string areaForm, string nivelFormacao):
-Funcionario(4, codigo, nome, endereco, telefone, dataIni, designacao, salario){
+Presidente::Presidente(string codigo, string nome, string CEP, string numeroCasa, string telefone, string dataIni, string designacao, double salario, string areaForm, string nivelFormacao):
+Funcionario(4, codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, salario){
     this->areaForm = areaForm;
     this->nivelFormacao = nivelFormacao;
 }

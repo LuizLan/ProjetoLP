@@ -3,8 +3,8 @@
 Operador::Operador(){
 
 }
-Operador::Operador(string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario):
-Funcionario(1, codigo, nome, endereco, telefone, dataIni, designacao, salario){
+Operador::Operador(string codigo, string nome, string CEP, string numeroCasa, string telefone, string dataIni, string designacao, double salario):
+Funcionario(1, codigo, nome, CEP, numeroCasa,telefone, dataIni, designacao, salario){
     
 }
 Operador::~Operador(){

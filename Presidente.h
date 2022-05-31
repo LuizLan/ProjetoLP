@@ -6,7 +6,7 @@ class Presidente:public Funcionario{
 
 public:
     Presidente();
-    Presidente(string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario, string areaForm, string nivelFormacao);//construtor para iniciar um presidente, com as informações adicionais area de formação e nivel de formação academica
+    Presidente(string codigo, string nome, string CEP, string numeroCasa, string telefone, string dataIni, string designacao, double salario, string areaForm, string nivelFormacao);//construtor para iniciar um presidente, com as informações adicionais area de formação e nivel de formação academica
     ~Presidente();
 
     void concederAumento();

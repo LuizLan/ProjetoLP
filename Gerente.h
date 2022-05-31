@@ -6,7 +6,7 @@ class Gerente:public Funcionario{
 
 public:
     Gerente();
-    Gerente(string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario, string areaSup); //construtor para adicionar gerente, area de supervisao como informação adicional
+    Gerente(string codigo, string nome, string CEP, string numeroCasa, string telefone, string dataIni, string designacao, double salario, string areaSup); //construtor para adicionar gerente, area de supervisao como informação adicional
     ~Gerente();
 
     void concederAumento(); //aumento de 10%

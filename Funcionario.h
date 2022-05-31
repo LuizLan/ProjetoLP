@@ -12,7 +12,7 @@ class Funcionario{
 
 public:
     Funcionario();
-    Funcionario(int tipo,string codigo, string nome, string endereco, string telefone, string dataIni, string designacao, double salario); //construtor base para adicionar funcionarios
+    Funcionario(int tipo,string codigo, string nome, string CEP, string numeroCasa, string telefone, string dataIni, string designacao, double salario); //construtor base para adicionar funcionarios
     ~Funcionario();
 
     virtual void concederAumento() = 0;
@@ -20,7 +20,8 @@ public:
     int getTipo(); //funções get
     string getCodigo();
     string getNome();
-    string getEndereco();
+    string getCEP();
+    string getNumeroCasa();
     string getTelefone();
     string getDataIni();
     string getDesignacao();
@@ -29,7 +30,8 @@ public:
     void setTipo(int T); //funcções set
     void setCodigo(string C);
     void setNome(string N);
-    void setEndereco(string E);
+    void setCEP(string C);
+    void setNumeroCasa(string N);
     void setTelefone(string T);
     void setDataIni(string D);
     void setDesignacao(string D);
@@ -43,7 +45,7 @@ public:
     virtual void setNivelFormacao(string N);
 
 protected:
-    string codigo, nome, endereco, telefone, dataIni, designacao; // dataIni = data inicialização, designação = operador, gerente, diretor, presidente
+    string codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao; // dataIni = data inicialização, designação = operador, gerente, diretor, presidente
     double salario;
     int tipo; // 1 = operador,2 = gerente,3 = diretor,4 = presidente
 
