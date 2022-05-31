@@ -46,6 +46,8 @@ string GerenciadorFuncionarios::enderecoToString(string numeroCasa){
         }
         endereco = rua + ", numero " + numeroCasa + ", " + bairro + ", " + cidade + ", " + estado;
         fs.close();
+    }else{
+        return "Erro ao ler endereco gerado \n";
     }
     remove("cep.txt");
 
@@ -380,7 +382,7 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                     cout << "Erro - Designação imprópria" << endl;
                     break;
                 }
-            //break;
+            break;
 
             case 7:
                 cout << "Insira o novo salario: ";
@@ -502,7 +504,7 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         return;
     }
 
-    string nome, CEP;
+    string nome, enderecoBusca;
     int encontrado = 0, menu;
 
     cout << "Digite como você deseja buscar o funcionario: " << endl <<
@@ -529,7 +531,7 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         if (encontrado==0){
             cout << "nenhum funcionario encontrado" << endl;
         }else{
-            cout << "foram encontrados: " << encontrado << "funcionario(s)." << endl;
+            cout << "foram encontrados: " << encontrado << " funcionario(s)." << endl;
         }
 
         break;
@@ -598,10 +600,11 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         break;
     case 3: //endereço, SERA ALTERADO QUANDO COMEÇAR A USAR CEP
         cout << "Insira a cidade ou o bairro em que você deseja procurar: " << endl;
-        getline(cin, CEP);
+        getline(cin, enderecoBusca);
 
         for (int i = 0; i < listaFuncionarios.size(); i++){
-            if (listaFuncionarios.at(i)->getCEP().find(CEP) != string::npos){
+            gerarEndereco(listaFuncionarios.at(i)->getCEP());
+            if (enderecoToString(listaFuncionarios.at(i)->getNumeroCasa()).find(enderecoBusca) != string::npos){
                 exibirFuncionario(i);
                 encontrado+=1;
             }
@@ -609,14 +612,12 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         if (encontrado==0){
             cout << "nenhum funcionario encontrado" << endl;
         }else{
-            cout << "foram encontrados: " << encontrado << "funcionario(s)." << endl;
+            cout << "foram encontrados: " << encontrado << " funcionario(s)." << endl;
         }
-
         break;
     default:
 
         cout << "Opção Inválida para busca de funcionários" << endl;
-
         break;
     }
 }

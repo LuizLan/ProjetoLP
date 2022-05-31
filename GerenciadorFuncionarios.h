@@ -24,8 +24,8 @@ public:
 
     void concederAumento(); // função que concede um aumento a todos os funcionarios baseados na sua designação
 
-    void gerarEndereco(string cep);
-    string enderecoToString(string numeroCasa);
+    void gerarEndereco(string cep); //gera um arquivo com as informações de endereço de um funcionario baseado no cep
+    string enderecoToString(string numeroCasa); //recebe o numero da casa do funcionario e retorna uma string com o endereço completo, deleta o arquivo gerado por gerar endereço, essas duas funções PRECISAM SER USADAS JUNTAS
 
 protected:
 
