@@ -610,21 +610,6 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
                     }
                 }
             }
-            
-            
-
-            /*if (ano >= anoI && ano <= anoF){
-                cout << "checagem ano" << endl;
-                if (mes>= mesI && mes <= mesF){
-                    cout << "checagem mes" << endl;
-                    if (dia>=diaI && dia<=diaF){
-                        cout << "checagem dia" << endl;
-                        exibirFuncionario(i);
-                        encontrado += 1;
-                    }
-                }
-            }*/
-
         }
 
         if (encontrado==0){
