@@ -16,11 +16,13 @@ vector<Funcionario*> GerenciadorFuncionarios::getListaFuncionarios(){ //get para
     return listaFuncionarios;
 }
 
-void GerenciadorFuncionarios::gerarEndereco(string cep){
+string GerenciadorFuncionarios::gerarEndereco(string cep, string numeroCasa){
     string url;
 
     url = "https://viacep.com.br/ws/" + cep +"/json/";
     system(("wget -q -O cep.txt " + url).c_str());
+
+    return enderecoToString(numeroCasa);
 }
 
 string GerenciadorFuncionarios::enderecoToString(string numeroCasa){
@@ -448,11 +450,11 @@ void GerenciadorFuncionarios::exibirFuncionario(int i){ //Função que recebe um
         return;
     }
 
-    gerarEndereco(listaFuncionarios.at(i)->getCEP());
+    
     
     cout << "\nCodigo do funcionario: " << listaFuncionarios.at(i)->getCodigo() << endl <<
             "   Nome: " << listaFuncionarios.at(i)->getNome() << endl <<
-            "   Endereço: " << enderecoToString(listaFuncionarios.at(i)->getNumeroCasa()) << endl <<
+            "   Endereço: " << gerarEndereco(listaFuncionarios.at(i)->getCEP(), listaFuncionarios.at(i)->getNumeroCasa()) << endl <<
             "   Telefone : " << listaFuncionarios.at(i)->getTelefone() << endl <<
             "   Data de ingresso: " << listaFuncionarios.at(i)->getDataIni() << endl <<
             "   Designação: " << listaFuncionarios.at(i)->getDesignacao() << endl <<
@@ -603,8 +605,7 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         getline(cin, enderecoBusca);
 
         for (int i = 0; i < listaFuncionarios.size(); i++){
-            gerarEndereco(listaFuncionarios.at(i)->getCEP());
-            if (enderecoToString(listaFuncionarios.at(i)->getNumeroCasa()).find(enderecoBusca) != string::npos){
+            if (gerarEndereco(listaFuncionarios.at(i)->getCEP(), listaFuncionarios.at(i)->getNumeroCasa()).find(enderecoBusca) != string::npos){
                 exibirFuncionario(i);
                 encontrado+=1;
             }
