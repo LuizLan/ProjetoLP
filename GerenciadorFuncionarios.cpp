@@ -449,9 +449,7 @@ void GerenciadorFuncionarios::exibirFuncionario(int i){ //Função que recebe um
         std::cout << e.what() << endl;
         return;
     }
-
-    
-    
+   
     cout << "\nCodigo do funcionario: " << listaFuncionarios.at(i)->getCodigo() << endl <<
             "   Nome: " << listaFuncionarios.at(i)->getNome() << endl <<
             "   Endereço: " << gerarEndereco(listaFuncionarios.at(i)->getCEP(), listaFuncionarios.at(i)->getNumeroCasa()) << endl <<
@@ -537,68 +535,104 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         }
 
         break;
-    case 2: //data de ingresso, NAO FINALIZADO, MAL COMEÇADO
-        cout << "In construction" << endl;
-        break;
+    case 2: 
 
         int dia, mes, ano, diaI, mesI, anoI, diaF, mesF, anoF;
-        char data[11];
+
         cout << "Insira o intervalo da data de ingresso a ser procurada: " << endl <<
                 "Data inicial: ";
-        cin >> diaI; // read the day
-        if ( std::cin.get() != '/' ) // make sure there is a slash between DD and MM
+        cin >> diaI; // le dia inicial
+        if ( std::cin.get() != '/' ) // checando '/'
         {
             std::cout << "esperado /\n";
             break;
         }
-        cin >> mesI; // read the month
-        if ( std::cin.get() != '/' ) // make sure there is a slash between MM and YYYY
+        cin >> mesI; // le mes inicial
+        if ( std::cin.get() != '/' ) // checando '/'
         {
             std::cout << "esperado /\n";
             break;
         }
-        cin >> anoI; // read the year
+        cin >> anoI; // le ano final
         cin.ignore();
         cout << "Data final: ";
-        cin >> diaF; // read the day
-        if ( std::cin.get() != '/' ) // make sure there is a slash between DD and MM
+        cin >> diaF; // le dia final
+        if ( std::cin.get() != '/' ) // checando '/'
         {
             std::cout << "esperado /\n";
             break;
         }
-        cin >> mesF; // read the month
-        if ( std::cin.get() != '/' ) // make sure there is a slash between MM and YYYY
+        cin >> mesF; // le mes final
+        if ( std::cin.get() != '/' ) // checando '/'
         {
             std::cout << "esperado /\n";
             break;
         }
-        cin >> anoF; // read the year
+        cin >> anoF; // le ano final
         cin.ignore();
 
-        cout << "dia ini: " << diaI << "mes ini: " << mesI << "ano ini: " << anoI << endl;
-        cout << "dia fim: " << diaF << "mes fim: " << mesF << "ano fim: " << anoF << endl;
-        /*for (int i = 0; i < listaFuncionarios.size(); i++){
-            strcpy(data, listaFuncionarios.at(i)->getDataIni().c_str());
-            // data: 1, 2, /, 1, 0, /, 2, 0, 0, 4, /0
-            dia = ((int)data[0])*10 + (int)data[1];
-            mes = ((int)data[3])*10 + (int)data[4];
-            ano = ((int)data[6])*1000 + ((int)data[7])*100 + ((int)data[8])*10 + (int)data[9];
-            cout << "(debbuging)dia mes e ano do funcionario: " << dia << "/" << mes << "/" << ano << endl;
-            if (ano >= anoI && ano <= anoF){
-                if (mes>= mesI && mes <= mesF){
-                    if (dia>=diaI && dia<=diaF){
+        for (int i = 0; i < listaFuncionarios.size(); i++){
+            dia = stoi(listaFuncionarios.at(i)->getDataIni().substr(0, listaFuncionarios.at(i)->getDataIni().size() - 8));
+            mes = stoi(listaFuncionarios.at(i)->getDataIni().substr(3, listaFuncionarios.at(i)->getDataIni().size() - 8));
+            ano = stoi(listaFuncionarios.at(i)->getDataIni().substr(6));
+            
+            if (anoI == anoF){
+                if (mesI == mesF){
+                    if (dia>=diaI && dia<= diaF){
+                        exibirFuncionario(i);
+                        encontrado += 1;
+                    }
+                }else if(mes>mesI && mes<mesF){
+                    exibirFuncionario(i);
+                    encontrado += 1;
+                }
+            }else if (ano>anoI && ano<anoF){
+                exibirFuncionario(i);
+                encontrado += 1;
+            }else if(ano == anoI){
+                if (mes > mesI){
+                    exibirFuncionario(i);
+                    encontrado += 1;
+                }else if (mes == mesI){
+                    if (dia>=diaI){
+                        exibirFuncionario(i);
+                        encontrado += 1;
+                    }
+                }
+            }else if (ano == anoF){
+                if (mes < mesF){
+                    exibirFuncionario(i);
+                    encontrado += 1;
+                }else if (mes == mesF){
+                    if (dia<=diaF){
                         exibirFuncionario(i);
                         encontrado += 1;
                     }
                 }
             }
+            
+            
+
+            /*if (ano >= anoI && ano <= anoF){
+                cout << "checagem ano" << endl;
+                if (mes>= mesI && mes <= mesF){
+                    cout << "checagem mes" << endl;
+                    if (dia>=diaI && dia<=diaF){
+                        cout << "checagem dia" << endl;
+                        exibirFuncionario(i);
+                        encontrado += 1;
+                    }
+                }
+            }*/
+
         }
+
         if (encontrado==0){
             cout << "nenhum funcionario encontrado" << endl;
         }else{
             cout << "foram encontrados: " << encontrado << "funcionario(s)." << endl;
         }
-        */
+        
         break;
     case 3: //endereço, SERA ALTERADO QUANDO COMEÇAR A USAR CEP
         cout << "Insira a cidade ou o bairro em que você deseja procurar: " << endl;
