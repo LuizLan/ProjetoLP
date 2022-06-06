@@ -9,10 +9,12 @@ using namespace std;
 
 int main(){
     int i;
-    int menu, menuFolha;
-    
+    int menu;
     GerenciadorFuncionarios gerenciador;
 
+    setlocale(LC_ALL, "");
+
+    gerenciador.lerArquivo();
 
     while (1){
         cout << "______MENU______" << endl << endl;
@@ -62,6 +64,7 @@ int main(){
             break;
         case 0:
             cout << "saindo..." << endl;
+            gerenciador.salvarArquivo();
             return 1;
         default:
             cout << "Opção inválida, insira um valor de 1 a 8." << endl;

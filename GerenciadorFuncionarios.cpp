@@ -1,13 +1,16 @@
-#include "GerenciadorFuncionarios.h"
+#include"GerenciadorFuncionarios.h"
 #include<exception>
 #include<iostream>
 #include<stdlib.h>
 #include<fstream>
-#include <locale>
-#include <locale.h>
+#include<locale>
+#include<locale.h>
+#include<fstream>
 
 const int anoMAXIMO = 9999;
 const int anoMINIMO = 1940;
+
+using namespace std;
 
 GerenciadorFuncionarios::GerenciadorFuncionarios(){
 
@@ -15,6 +18,102 @@ GerenciadorFuncionarios::GerenciadorFuncionarios(){
 
 GerenciadorFuncionarios::~GerenciadorFuncionarios(){
 
+}
+
+void GerenciadorFuncionarios::lerArquivo(){
+    fstream fs;
+    Funcionario* funcionario01;
+    string codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, areaSup, areaForm, nivelFormacao; // dataIni = data inicialização, designação = operador, gerente, diretor, presidente
+    double salario;
+    int tipo; // 1 = operador,2 = gerente,3 = diretor,4 = presidente
+
+    fs.open("listaDeFuncionarios.txt", fstream::in);
+    if(!fs.is_open()){
+        std::cout << "Erro ao abrir arquivo para leitura\n";
+        return;
+    }
+    while (!fs.eof()){
+        fs >> tipo;
+        if (fs.eof())
+            break;
+        fs.ignore();
+        getline(fs, designacao);
+        getline(fs, codigo);
+        getline(fs, nome);
+        getline(fs, CEP);
+        getline(fs, numeroCasa);
+        getline(fs, telefone);
+        getline(fs, dataIni);
+        fs >> salario;
+        fs.ignore();
+        switch (tipo){
+        case 1:
+            listaFuncionarios.push_back(new Operador(codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, salario));
+            break;
+        case 2:
+            getline(fs, areaSup);
+            listaFuncionarios.push_back(new Gerente(codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, salario, areaSup));
+            break;
+        case 3:
+            getline(fs, areaSup);
+            getline(fs, areaForm);
+
+            listaFuncionarios.push_back(new Diretor(codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, salario, areaSup, areaForm));
+            break;
+        case 4:
+            getline(fs, areaForm);
+            getline(fs, nivelFormacao);
+
+            listaFuncionarios.push_back(new Presidente(codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, salario, areaForm, nivelFormacao));
+            break;
+        default:
+            break;
+        }
+    }
+}
+void GerenciadorFuncionarios::salvarArquivo(){
+    fstream fs;
+
+    fs.open("listaDeFuncionarios.txt", fstream::out);
+    if (!fs.is_open()){
+        std::cout << "Erro ao abrir arquivo para escrita" << endl;
+    }
+
+    for (int i = 0; i < listaFuncionarios.size(); i++){
+        fs << listaFuncionarios.at(i)->getTipo() << endl;
+        fs << listaFuncionarios.at(i)->getDesignacao() << endl;
+        fs << listaFuncionarios.at(i)->getCodigo() << endl;
+        fs << listaFuncionarios.at(i)->getNome() << endl;
+        fs << listaFuncionarios.at(i)->getCEP() << endl;
+        fs << listaFuncionarios.at(i)->getNumeroCasa() << endl;
+        fs << listaFuncionarios.at(i)->getTelefone() << endl;
+        fs << listaFuncionarios.at(i)->getDataIni() << endl;
+        fs << listaFuncionarios.at(i)->getSalario() << endl;
+        
+        switch (listaFuncionarios.at(i)->getTipo()){
+            
+        case 1:
+            
+            break;
+        case 2:
+            fs << listaFuncionarios.at(i)->getAreaSup() << endl;
+
+            break;
+        case 3:
+            fs << listaFuncionarios.at(i)->getAreaSup() << endl;
+            fs << listaFuncionarios.at(i)->getAreaForm() << endl;
+
+            break;
+        case 4:
+            fs << listaFuncionarios.at(i)->getAreaForm() << endl;
+            fs << listaFuncionarios.at(i)->getNivelFormacao() << endl;
+
+            break;
+        default:
+        
+            break;
+        }
+    }
 }
 
 vector<Funcionario*> GerenciadorFuncionarios::getListaFuncionarios(){ //get para o vetor listaFuncionarios
@@ -38,7 +137,7 @@ string GerenciadorFuncionarios::enderecoToString(string numeroCasa){
     fs.open("cep.txt", fstream::in);
     if (fs.is_open()){
         while (!fs.eof()){
-            getline(fs, json);
+            std::getline(fs, json);
 
             if (i ==2){
                 rua = json.substr(17, json.size()-19);
@@ -65,7 +164,7 @@ int verificaFuncionario(int quantidade){ //função para verificar se existem fu
 
     if(quantidade == 0){
         string mensagem = "\nNão existem funcionarios disponiveis\n"
-                "Redirencionando ao Menu...";
+                "Redirecionando ao Menu...";
         throw logic_error(mensagem);
     }
     else

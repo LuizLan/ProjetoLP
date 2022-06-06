@@ -24,6 +24,9 @@ public:
 
     void concederAumento(); // função que concede um aumento a todos os funcionarios baseados na sua designação
 
+    void lerArquivo();
+    void salvarArquivo();
+
 protected:
 
 private:

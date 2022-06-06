@@ -8,6 +8,7 @@ Funcionario::Funcionario(int tipo,string codigo, string nome, string CEP, string
     this->codigo = codigo;
     this->nome = nome;
     this->CEP = CEP;
+    this->numeroCasa = numeroCasa;
     this->telefone=telefone;
     this->dataIni = dataIni;
     this->designacao = designacao;

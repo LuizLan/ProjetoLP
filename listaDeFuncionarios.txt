@@ -1,0 +1,51 @@
+1
+Operario
+1112
+luiz augusto
+63028310
+1003
+88 988888888
+10/05/2007
+4000
+2
+Gerente
+1113
+lango
+63028310
+1003
+88 988134803
+23/07/2006
+9000
+robotica e IA
+3
+Diretor
+1114
+Maria
+63028310
+1003
+88 988859775
+26/07/2010
+15000
+robotica e IA
+engenharia mecatronica
+4
+Presidente
+1115
+eduardo
+63028310
+1003
+88 988766534
+26/08/2003
+20000
+engenharia mecatronica
+doutorado
+2
+Gerente
+1116
+Rafael batista
+58011-345
+1090
+83988888888
+08/04/2006
+7000
+producao mecanica
