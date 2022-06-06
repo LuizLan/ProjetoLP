@@ -3,6 +3,11 @@
 #include<iostream>
 #include<stdlib.h>
 #include<fstream>
+#include <locale>
+#include <locale.h>
+
+const int anoMAXIMO = 9999;
+const int anoMINIMO = 1940;
 
 GerenciadorFuncionarios::GerenciadorFuncionarios(){
 
@@ -49,14 +54,14 @@ string GerenciadorFuncionarios::enderecoToString(string numeroCasa){
         endereco = rua + ", numero " + numeroCasa + ", " + bairro + ", " + cidade + ", " + estado;
         fs.close();
     }else{
-        return "Erro ao ler endereco gerado \n";
+        cout << "Erro ao ler endereco gerado \n";
     }
     remove("cep.txt");
 
     return endereco;
 }
 
-int VerificaFuncionario(int quantidade){ //função para verificar se existem funcionarios na empresa, caso nao exista o usuario volta ao menu
+int verificaFuncionario(int quantidade){ //função para verificar se existem funcionarios na empresa, caso nao exista o usuario volta ao menu
 
     if(quantidade == 0){
         string mensagem = "\nNão existem funcionarios disponiveis\n"
@@ -67,38 +72,155 @@ int VerificaFuncionario(int quantidade){ //função para verificar se existem fu
         return 0;
 }
 
-bool VerificaSeTemLetras(string str) { //função para verificar se uma string possui letras, usada para tratamento de excessão
+bool verificaSeTemLetras(string str) { //função para verificar se uma string possui letras, usada para tratamento de excessão
 
-    string mensagem = "\nDigite uma opcao valida!\n";
+    string mensagem = "\nEssa entrada não permite nenhum tipo de letras!!\n";
 
-    for (int i = 0; i < str.length(); i++){
-        if (isdigit(str[i]) == false){
+    for (int i = 0; i < str.size(); i++){
+        if (std::isdigit(str[i]) == 0){
             throw invalid_argument(mensagem);
         }
-        return true;
     }
+        return true;
 }
 
-bool VerificaNumero(int tipo){ //função para verificar se uma opção de menu é válida
+bool verificaNumero(int tipo, int tam){ //função para verificar se uma opção de menu é válida
 
-    string mensagem = "\nDigite uma opcao valida!\n";
+    string mensagem = "\nEsse número não é válido!\n";
 
-    if(tipo < 1 || tipo > 4){
+    if(tipo < 1 || tipo > tam){
         throw invalid_argument(mensagem);
     }
 
     return 1;
 }
 
+bool analisaDataValida(string data){
+    while(1){ // laço de repetição para verificar se a data inserida é inválida
+
+        string mensagem = "Data inválida, por favor digite a data no seguinte formato: DD/MM/AAAA\n"; // mensagem de erro
+
+
+        if(data.size() != 10){ // if para verificar se a data foi inserida da meneira correta DD/MM/AAAA = 10 caracteres
+            cout << mensagem; // mensagem de erro que sera transmitida ao usuário caso a data seja inserida incorretamente
+            return false; // e o programa entra novamente no laço de repetição pedindo ao usuário que digite uma data válida, se aplicando a todos os "return false" desta função
+        }
+        else{
+            for(int i = 0; i < data.size(); i++){
+
+                if(i == 2 || i == 5){ // caso exista '/' na posição 2 e 5 dd/mm/aaaa, esse caractere é pulado para a verificação abaixo
+                    i++; // incrementa o valor de "i" no laço for
+                }
+                if (std::isdigit(data[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
+                    cout << mensagem << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
+                    return false;
+                }
+            }
+            if(data[2] == '/' && data[5] == '/'){ // pra verificar se a "/" está colocada de maneira correta na data inserida
+                    return true; // caso sim, o programa funciona normalmente
+            }
+            else{
+                cout << mensagem; // caso não, a mensagem de erro é passada
+                return false;
+            }
+        }
+    }
+}
+
+bool verificaSeDataExiste(int dia, int mes, int ano){ // função que verifica se o dia, mês, ou ano inserido existe, caso não, o usuário recebe uma mensagem de erro
+
+    string mensagem = "A data está incorreta, verifique se digitou corretamente"; // mensagem de erro
+
+    if (ano > anoMAXIMO || ano < anoMINIMO){ // anoMAXIMO definido como 9999 e anoMINIMO definido como 1950, pois ultrapassa a idade de trabalho
+        cout << "Você ultrapassou a idade para trabalhar.\nTente digitar uma data acima de 1940\n";
+        return false; // e o programa entra novamente no laço de repetição pedindo ao usuário que digite uma data válida, se aplicando a todos os "return false" desta função
+    }
+    if (mes < 1 || mes > 12){ // verifica se o mês inserido está entre 1 e 12
+        cout << mensagem << endl;
+        return false;
+    }
+    if (dia < 1 || dia > 31){ // verifica se o dia inserido está entre 0 e 31
+        cout << mensagem << endl;
+        return false;
+    }
+    if (mes == 2){ // caso o mês inserido seja, fevereiro, o programa não permite dias acima do valor 28
+        if(dia > 28){
+            cout << mensagem << endl;
+            return false;
+        }
+    }
+    else if(mes == 1 || mes == 3|| mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){ // todos os meses com dias até 31
+        if(dia >= 31){
+            cout << mensagem << endl;
+            return false;
+        }
+    }
+    else // como todos os outros meses fora fevereiro, possuem dia até no máximo 31, os outros meses possuem dias até 30
+        if(dia >= 30){
+            cout << mensagem << endl;
+            return false;
+        }
+    return true;
+}
+
+bool verificaCEP(string CEP){
+
+    string mensagem = "O CEP está incorreto, verifique se digitou corretamente"; // mensagem de erro
+
+    if(CEP.size() < 8 || CEP.size() > 9){
+        cout << mensagem << endl;
+        return false;
+    }
+
+    for(int i = 0; i < CEP.size(); i++){
+
+        if(CEP.size() == 9){
+            if(CEP[5] != '-'){
+                cout << mensagem << endl;
+                return false;
+            }
+            else{
+                if (std::isdigit(CEP[i]) == 0 && i != 5){
+                    cout << mensagem << endl;
+                    return false;
+                }
+            }
+        }
+        else{
+            if (std::isdigit(CEP[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
+                cout << mensagem << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
+                return false;
+            }
+        }
+    }
+}
+
+bool trataSalario(string salario){
+    for(int i = 0; i < salario.size(); i++){
+        if (std::isdigit(salario[i]) == 0 && salario[i] != ','){
+            if(salario[i] == '.'){
+                cout << "Caso haja casas decimais após o salário utilize ',' e não '.'\n";
+                return false;
+            }
+            else{
+                cout << "Salário inválido, tente digitar um salário válido!" << endl;
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tipo do funcionario e lê os dados do funcionario que vai ser cadastrado, chamando o construtor depndendo do tipo de funcionario
     string codigo, nome, CEP, numeroCasa, telefone, dataIni, areaSup, areaForm, nivelFormacao; //informações que serão enviadas no construtor dependendo do tipo de funcionario
     double salario;
-    string tipo;
-    int tipoFuncionario;
+    string tipo, salarioCerto;
+    int dia, mes, ano, tipoFuncionario; // variaveis tipo int, como dia mes e ano, e tipoFuncionario, para saber se o funcionario é operario, gerente, etc
+    bool executando = true; // AGUARDANDO CLASSE TRATA ERROS variável tipo bool utilizada para sair de todos os laços while de repetição utilizados para a entrada do usuário
 
     while(1){
         bool saiu = true;
-        cout << "Digite o tipo do Funcionario: "<< endl << // menu para o cadastro de funcionarios
+        cout << "Digite o tipo do Funcionario: " << endl << // menu para o cadastro de funcionarios
                 "1 - operario." << endl <<
                 "2 - gerente." << endl <<
                 "3 - diretor." << endl <<
@@ -108,13 +230,13 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
         getline(cin, tipo); // ler o tipo de funcionario
 
             try{
-                VerificaSeTemLetras(tipo); //verifica se a opção do menu tem letras
+                verificaSeTemLetras(tipo); //verifica se a opção do menu tem letras
                 tipoFuncionario = stoi(tipo);
                 if(tipoFuncionario == 0){ //se nao houver verifica se é 0 para retornar ao menu
                     cout << "voltando...\n\n";
                     return 0;
                 }
-                VerificaNumero(tipoFuncionario); //se n for 0 verifica se é um numero válido do menu
+                verificaNumero(tipoFuncionario, 4); //se n for 0 verifica se é um numero válido do menu + o valor da quantidade de opções do menu
             }
             catch(const invalid_argument e){ //catch no posível throw do VerificaNumero
                 std::cout << e.what() << endl;
@@ -151,16 +273,77 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
     cout << "Nome: " << endl;
     getline(cin, nome);
     cout << "CEP: " << endl;
-    getline(cin, CEP);
+    while(1){
+
+        getline(cin, CEP);
+
+        if(verificaCEP(CEP)){
+            break;
+        }
+    }
+
     cout << "Numero da casa: " << endl;
-    getline(cin, numeroCasa);
+
+    while(1){
+        bool saiu = true;
+        getline(cin, numeroCasa);
+        try{
+            verificaSeTemLetras(numeroCasa);
+        }
+        catch(const invalid_argument e){ //catch no posível throw do VerificaNumero
+            std::cout << e.what() << endl;
+            saiu = false; //altera a flag para que o usuario insira outra opção no menu
+        }
+
+        if(saiu){
+            break;
+        }
+    }
     cout << "Telefone : " << endl;
-    getline(cin, telefone);
-    cout << "Data de ingresso: " << endl;
-    getline(cin, dataIni);
+
+    while(1){
+        bool saiu = true;
+        getline(cin, telefone);
+        try{
+            verificaSeTemLetras(numeroCasa);
+        }
+        catch(const invalid_argument e){ //catch no posível throw do VerificaNumero
+            std::cout << e.what() << endl;
+            saiu = false; //altera a flag para que o usuario insira outra opção no menu
+        }
+
+        if(saiu){
+            break;
+        }
+    }
+
+    cout << "Data de ingresso DD/MM/AAAA: " << endl;
+
+    while(1){ // laço de repetição que verifica a data inserida até que ela esteja correta
+        getline(cin, dataIni); // escaneia a data inicial na qual o funcionario foi contratado
+        if(analisaDataValida(dataIni)){ // chamada da função que analisa se a data digitada não possui caracteres ou erros de digitação
+
+            for (int i = 0; i < dataIni.size(); i++){ //caso a função acima funcione corretamente, cada posição da string representando dia, mes e ano, se tornam tipo int, e são enviadas a próxima função
+                dia = stoi(dataIni.substr(0, 2)); // primeira e segunda posição da string >dd</mm/aaaa
+                mes = stoi(dataIni.substr(3, 4)); // terceira e quarta posição da string dd/>mm</aaaa
+                ano = stoi(dataIni.substr(6)); // da posição 6 e adiante da string dd/mm/>aaaa<
+            }
+            if(verificaSeDataExiste(dia, mes, ano)){ // por fim, caso a data inserida seja totalmente válida, o programa sai do laço de repetição e recebe as outras informações do usuário
+                break;
+            }
+        }
+    }
+
     cout << "Salario: " << endl;
-    cin >> salario;
-    cin.ignore();
+
+    while(1){
+        getline(cin, salarioCerto);
+
+        if(trataSalario(salarioCerto)){
+            salario = std::stod(salarioCerto);
+            break;
+        }
+    }
 
     switch (tipoFuncionario){ //switch dependendo do tipo de usuario informado
     case 1:
@@ -207,7 +390,7 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
     int tipoFuncionario; // usada para se a ocupação do usuario for editada
 
     try{
-        VerificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
+        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
     }
     catch(const logic_error e){
         std::cout << e.what() << endl;
@@ -312,13 +495,13 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                                 "4 - presidente." << endl;
                         getline(cin, tipo);
                         try{ //tratamento de erro para o menu
-                            VerificaSeTemLetras(tipo);
+                            verificaSeTemLetras(tipo);
                             tipoFuncionario = stoi(tipo);
                             if(tipoFuncionario == 0){
                                 cout << "voltando...\n\n";
                                 return 0;
                             }
-                            VerificaNumero(tipoFuncionario);
+                            verificaNumero(tipoFuncionario, 4);
                         }
                         catch(const invalid_argument e){
                             std::cout << e.what() << endl;
@@ -409,7 +592,7 @@ int GerenciadorFuncionarios::excluirFuncionario(){ //função que lê o codigo d
     char confirmacao;
 
     try{ //método try catch para capturar qualquer erro e retornar ao menu
-        VerificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
+        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
     }
     catch(const logic_error e){
         std::cout << e.what() << endl;
@@ -443,13 +626,13 @@ int GerenciadorFuncionarios::excluirFuncionario(){ //função que lê o codigo d
 void GerenciadorFuncionarios::exibirFuncionario(int i){ //Função que recebe um indice como parametro e mostra os dados do funcionario naquele indice
 
     try{ //método try catch para capturar qualquer erro e retornar ao menu
-        VerificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
+        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
     }
     catch(const logic_error e){
         std::cout << e.what() << endl;
         return;
     }
-   
+
     cout << "\nCodigo do funcionario: " << listaFuncionarios.at(i)->getCodigo() << endl <<
             "   Nome: " << listaFuncionarios.at(i)->getNome() << endl <<
             "   Endereço: " << gerarEndereco(listaFuncionarios.at(i)->getCEP(), listaFuncionarios.at(i)->getNumeroCasa()) << endl <<
@@ -482,7 +665,7 @@ void GerenciadorFuncionarios::exibirFuncionario(int i){ //Função que recebe um
 void GerenciadorFuncionarios::exibirTodosFuncionarios(){ //função que exibe todos os funcionarios
 
     try{ //método try catch para capturar qualquer erro e retornar ao menu
-        VerificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
+        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
     }
     catch(const logic_error e){
         std::cout << e.what() << endl;
@@ -497,7 +680,7 @@ void GerenciadorFuncionarios::exibirTodosFuncionarios(){ //função que exibe to
 void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcionario baseado em uma das tres opcoes exibidas
 
     try{ //método try catch para capturar qualquer erro e retornar ao menu
-        VerificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
+        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
     }
     catch(const logic_error e){
         std::cout << e.what() << endl;
@@ -535,7 +718,7 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         }
 
         break;
-    case 2: 
+    case 2:
 
         int dia, mes, ano, diaI, mesI, anoI, diaF, mesF, anoF;
 
@@ -575,7 +758,7 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
             dia = stoi(listaFuncionarios.at(i)->getDataIni().substr(0, listaFuncionarios.at(i)->getDataIni().size() - 8));
             mes = stoi(listaFuncionarios.at(i)->getDataIni().substr(3, listaFuncionarios.at(i)->getDataIni().size() - 8));
             ano = stoi(listaFuncionarios.at(i)->getDataIni().substr(6));
-            
+
             if (anoI == anoF){
                 if (mesI == mesF){
                     if (dia>=diaI && dia<= diaF){
@@ -617,7 +800,7 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         }else{
             cout << "foram encontrados: " << encontrado << "funcionario(s)." << endl;
         }
-        
+
         break;
     case 3: //endereço, SERA ALTERADO QUANDO COMEÇAR A USAR CEP
         cout << "Insira a cidade ou o bairro em que você deseja procurar: " << endl;
