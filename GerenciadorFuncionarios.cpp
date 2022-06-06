@@ -20,7 +20,7 @@ GerenciadorFuncionarios::~GerenciadorFuncionarios(){
 
 }
 
-void GerenciadorFuncionarios::lerArquivo(){
+void GerenciadorFuncionarios::lerArquivo(){ //le o arquivo linha por linha e cria um objeto operador, gerente, diretor, presidente dependendo do tipo
     fstream fs;
     Funcionario* funcionario01;
     string codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, areaSup, areaForm, nivelFormacao; // dataIni = data inicialização, designação = operador, gerente, diretor, presidente
@@ -32,7 +32,7 @@ void GerenciadorFuncionarios::lerArquivo(){
         std::cout << "Erro ao abrir arquivo para leitura\n";
         return;
     }
-    while (!fs.eof()){
+    while (!fs.eof()){ //fazendo a leitura de cada linha do arquivo para depois criar o objeto funcionario
         fs >> tipo;
         if (fs.eof())
             break;
@@ -46,7 +46,7 @@ void GerenciadorFuncionarios::lerArquivo(){
         getline(fs, dataIni);
         fs >> salario;
         fs.ignore();
-        switch (tipo){
+        switch (tipo){ //switch case para criar o objeto especifico, e obter mais informações se necessário
         case 1:
             listaFuncionarios.push_back(new Operador(codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, salario));
             break;
@@ -71,7 +71,7 @@ void GerenciadorFuncionarios::lerArquivo(){
         }
     }
 }
-void GerenciadorFuncionarios::salvarArquivo(){
+void GerenciadorFuncionarios::salvarArquivo(){ //salva a listaDeFuncionarios em um arquivo
     fstream fs;
 
     fs.open("listaDeFuncionarios.txt", fstream::out);
@@ -80,18 +80,18 @@ void GerenciadorFuncionarios::salvarArquivo(){
     }
 
     for (int i = 0; i < listaFuncionarios.size(); i++){
-        fs << listaFuncionarios.at(i)->getTipo() << endl;
-        fs << listaFuncionarios.at(i)->getDesignacao() << endl;
-        fs << listaFuncionarios.at(i)->getCodigo() << endl;
-        fs << listaFuncionarios.at(i)->getNome() << endl;
+        fs << listaFuncionarios.at(i)->getTipo() << endl;           //
+        fs << listaFuncionarios.at(i)->getDesignacao() << endl;     // 
+        fs << listaFuncionarios.at(i)->getCodigo() << endl;         //LEITURA DAS VARIAVEIS COMUNS A TODOS OS FUNCIONARIOS
+        fs << listaFuncionarios.at(i)->getNome() << endl;           //
         fs << listaFuncionarios.at(i)->getCEP() << endl;
         fs << listaFuncionarios.at(i)->getNumeroCasa() << endl;
         fs << listaFuncionarios.at(i)->getTelefone() << endl;
         fs << listaFuncionarios.at(i)->getDataIni() << endl;
         fs << listaFuncionarios.at(i)->getSalario() << endl;
         
-        switch (listaFuncionarios.at(i)->getTipo()){
-            
+        switch (listaFuncionarios.at(i)->getTipo()){ //switch case para leitura de funções específicas para cada funcionario
+
         case 1:
             
             break;
@@ -897,7 +897,7 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         if (encontrado==0){
             cout << "nenhum funcionario encontrado" << endl;
         }else{
-            cout << "foram encontrados: " << encontrado << "funcionario(s)." << endl;
+            cout << "foram encontrados: " << encontrado << " funcionario(s)." << endl;
         }
 
         break;

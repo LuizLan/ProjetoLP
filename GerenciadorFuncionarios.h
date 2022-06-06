@@ -24,7 +24,7 @@ public:
 
     void concederAumento(); // função que concede um aumento a todos os funcionarios baseados na sua designação
 
-    void lerArquivo();
+    void lerArquivo(); //conjunto de funções que leem o arquivo listadefuncionarios e escrevem nele
     void salvarArquivo();
 
 protected:
