@@ -17,7 +17,7 @@ int main(){
     gerenciador.lerArquivo();
 
     while (1){
-        cout << "______MENU______" << endl << endl;
+        cout << "______MENU PRINCIPAL______" << endl << endl;
 
         cout << "1 - Cadastrar funcionario." << endl <<
                 "2 - Editar funcionario." << endl <<
@@ -28,13 +28,16 @@ int main(){
                 "7 - Exibir folha salarial" << endl <<
                 "0 - Sair do programa" << endl;
 
+        cout << "-> ";
         cin >> menu;
         cin.ignore();
 
+        system("cls");
+
         switch (menu){
         case 1:
-
             gerenciador.cadastrarFuncionario();
+
             break;
         case 2:
             gerenciador.editarFuncionario();
@@ -46,6 +49,8 @@ int main(){
             break;
         case 4:
             gerenciador.exibirTodosFuncionarios();
+            system("pause");
+            system("cls");
             break;
         case 5:
             gerenciador.buscarFuncionario();
