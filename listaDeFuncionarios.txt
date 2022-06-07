@@ -1,12 +1,3 @@
-1
-Operario
-1112
-luiz augusto
-63028310
-1003
-88 988888888
-10/05/2007
-4000
 2
 Gerente
 1113
@@ -49,3 +40,13 @@ Rafael batista
 08/04/2006
 7000
 producao mecanica
+2
+Gerente
+1112
+luiz augusto
+63028310
+1003
+88 988888888
+10/05/2007
+4000
+publicidade

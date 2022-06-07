@@ -20,6 +20,10 @@ GerenciadorFuncionarios::~GerenciadorFuncionarios(){
 
 }
 
+vector<Funcionario*> GerenciadorFuncionarios::getListaFuncionarios(){ //get para o vetor listaFuncionarios
+    return listaFuncionarios;
+}
+
 void GerenciadorFuncionarios::lerArquivo(){ //le o arquivo linha por linha e cria um objeto operador, gerente, diretor, presidente dependendo do tipo
     fstream fs;
     Funcionario* funcionario01;
@@ -114,10 +118,6 @@ void GerenciadorFuncionarios::salvarArquivo(){ //salva a listaDeFuncionarios em 
             break;
         }
     }
-}
-
-vector<Funcionario*> GerenciadorFuncionarios::getListaFuncionarios(){ //get para o vetor listaFuncionarios
-    return listaFuncionarios;
 }
 
 string GerenciadorFuncionarios::gerarEndereco(string cep, string numeroCasa){
