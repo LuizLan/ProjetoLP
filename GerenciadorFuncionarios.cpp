@@ -974,14 +974,16 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
 void GerenciadorFuncionarios::concederAumento(){
 
     string confirmacao;
+    double salario;
 
     cout << "Deseja realmente conceder aumento a todos os funcionarios? (y/n)\n";
 
-    cin >> confirmacao;
+    getline(cin, confirmacao);
 
     if(confirmacao == "y"){
         for (int i = 0; i < listaFuncionarios.size(); i++){
-            listaFuncionarios.at(i)->concederAumento();
+            salario = listaFuncionarios.at(i)->getSalario() + (listaFuncionarios.at(i)->getSalario()*listaFuncionarios.at(i)->getPorcentagem());
+            listaFuncionarios.at(i)->setSalario(salario);
         }
         cout << "Aumento concedido para todos os funcionarios\n";
     }

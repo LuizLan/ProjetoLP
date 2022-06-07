@@ -45,6 +45,9 @@ string Funcionario::getDesignacao(){
 double Funcionario::getSalario(){
     return salario;
 }
+float Funcionario::getPorcentagem(){
+    return porcentagem;
+}
 
 void Funcionario::setTipo(int T){
     tipo = T;

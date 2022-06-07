@@ -9,7 +9,8 @@ public:
     Diretor(string codigo, string nome, string CEP, string numeroCasa, string telefone, string dataIni, string designacao, double salario, string areaSup, string areaForm); //construtor para iniciar um diretor, com as informações adicionais area de supervisao e area de formação
     ~Diretor();
 
-    void concederAumento();
+   //void concederAumento();
+   float getPorcentagem();
 
     string getAreaSup();
     string getAreaForm();

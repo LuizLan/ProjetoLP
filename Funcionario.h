@@ -16,8 +16,6 @@ public:
     Funcionario(int tipo,string codigo, string nome, string CEP, string numeroCasa, string telefone, string dataIni, string designacao, double salario); //construtor base para adicionar funcionarios
     ~Funcionario();
 
-    virtual void concederAumento() = 0;
-
     int getTipo(); //funções get
     string getCodigo();
     string getNome();
@@ -44,10 +42,12 @@ public:
     virtual void setAreaSup(string A);
     virtual void setAreaForm(string A);
     virtual void setNivelFormacao(string N);
+    virtual float getPorcentagem() = 0;
 
 protected:
     string codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao; // dataIni = data inicialização, designação = operador, gerente, diretor, presidente
     double salario;
+    float porcentagem;
     int tipo; // 1 = operador,2 = gerente,3 = diretor,4 = presidente
 
 private:
