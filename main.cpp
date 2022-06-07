@@ -8,11 +8,11 @@
 using namespace std;
 
 int main(){
+    setlocale(LC_ALL, "Portuguese");
     int i;
     int menu;
     GerenciadorFuncionarios gerenciador;
 
-    setlocale(LC_ALL, "");
 
     gerenciador.lerArquivo();
 
