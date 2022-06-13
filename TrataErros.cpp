@@ -1,17 +1,15 @@
 #include "TrataErros.h"
 #include<fstream>
 
-TrataErros::TrataErros()
-{
-    //ctor
-}
-
-TrataErros::~TrataErros()
-{
-    //dtor
-}
+TrataErros::TrataErros(){}
+TrataErros::~TrataErros(){}
 
 bool TrataErros::VerificaSeTemLetras(string str) { //função para verificar se uma string possui letras, usada para tratamento de excessão
+
+    if(str.size() == 0){
+        cout << "Entrada Invalida\nTente Novamente\n\n";
+        return false;
+    }
 
     for (int i = 0; i < str.size(); i++){
         if (std::isdigit(str[i]) == 0){
@@ -139,7 +137,6 @@ bool TrataErros::AnalisaDataValida(string data){
 
         string mensagem = "Data inválida, por favor digite a data no seguinte formato: DD/MM/AAAA\n"; // mensagem de erro
 
-
         if(data.size() != 10){ // if para verificar se a data foi inserida da meneira correta DD/MM/AAAA = 10 caracteres
             cout << mensagem; // mensagem de erro que sera transmitida ao usuário caso a data seja inserida incorretamente
             return false; // e o programa entra novamente no laço de repetição pedindo ao usuário que digite uma data válida, se aplicando a todos os "return false" desta função
@@ -192,4 +189,23 @@ bool TrataErros::TrataSalario(string salario){
         }
     }
     return true;
+}
+
+bool TrataErros::VerificaTamanho(string str){
+    if(str.size() == 0){
+        cout << "Entrada Invalida\nTente Novamente\n\n";
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+bool TrataErros::VerificaTelefone(string telefone){
+    if(telefone.size() < 11){
+        cout << "Digite a data nesse formato DDD9XXXXXXXX ex: 83912345678\n";
+        return false;
+    }
+    else
+        return true;
 }
