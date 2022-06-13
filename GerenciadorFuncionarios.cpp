@@ -6,9 +6,7 @@
 #include<locale>
 #include<locale.h>
 #include<fstream>
-
-const int anoMAXIMO = 9999;
-const int anoMINIMO = 1940;
+#include "TrataErros.h"
 
 using namespace std;
 
@@ -19,6 +17,8 @@ GerenciadorFuncionarios::GerenciadorFuncionarios(){
 GerenciadorFuncionarios::~GerenciadorFuncionarios(){
 
 }
+
+TrataErros Tratar; // chamada da classe com a função de tratar todos os tipos de erros possíveis do programa
 
 vector<Funcionario*> GerenciadorFuncionarios::getListaFuncionarios(){ //get para o vetor listaFuncionarios
     return listaFuncionarios;
@@ -139,7 +139,7 @@ string GerenciadorFuncionarios::enderecoToString(string numeroCasa){
         while (!fs.eof()){
             std::getline(fs, json);
 
-            if (i ==2){
+            if (i == 2){
                 rua = json.substr(17, json.size()-19);
             }else if (i == 4){
                 bairro = json.substr(13, json.size()-15);
@@ -148,6 +148,7 @@ string GerenciadorFuncionarios::enderecoToString(string numeroCasa){
             }else if (i ==6){
                 estado = json.substr(9, json.size()- 11);
             }
+
             i++;
         }
         endereco = rua + ", numero " + numeroCasa + ", " + bairro + ", " + cidade + ", " + estado;
@@ -160,202 +161,38 @@ string GerenciadorFuncionarios::enderecoToString(string numeroCasa){
     return endereco;
 }
 
-int verificaFuncionario(int quantidade){ //função para verificar se existem funcionarios na empresa, caso nao exista o usuario volta ao menu
-
-    if(quantidade == 0){
-        string mensagem = "\nNão existem funcionarios disponiveis\n"
-                "Redirecionando ao Menu...";
-        throw logic_error(mensagem);
-    }
-    else
-        return 0;
-}
-
-bool verificaSeTemLetras(string str) { //função para verificar se uma string possui letras, usada para tratamento de excessão
-
-    string mensagem = "\nEssa entrada não permite nenhum tipo de letras!!\n";
-
-    for (int i = 0; i < str.size(); i++){
-        if (std::isdigit(str[i]) == 0){
-            throw invalid_argument(mensagem);
-        }
-    }
-        return true;
-}
-
-bool verificaNumero(int tipo, int tam){ //função para verificar se uma opção de menu é válida
-
-    string mensagem = "\nEsse número não é válido!\n";
-
-    if(tipo < 1 || tipo > tam){
-        throw invalid_argument(mensagem);
-    }
-
-    return 1;
-}
-
-bool analisaDataValida(string data){
-
-    while(1){ // laço de repetição para verificar se a data inserida é inválida
-
-        string mensagem = "Data inválida, por favor digite a data no seguinte formato: DD/MM/AAAA\n"; // mensagem de erro
-
-
-        if(data.size() != 10){ // if para verificar se a data foi inserida da meneira correta DD/MM/AAAA = 10 caracteres
-            cout << mensagem; // mensagem de erro que sera transmitida ao usuário caso a data seja inserida incorretamente
-            return false; // e o programa entra novamente no laço de repetição pedindo ao usuário que digite uma data válida, se aplicando a todos os "return false" desta função
-        }
-        else{
-            for(int i = 0; i < data.size(); i++){
-
-                if(i == 2 || i == 5){ // caso exista '/' na posição 2 e 5 dd/mm/aaaa, esse caractere é pulado para a verificação abaixo
-                    i++; // incrementa o valor de "i" no laço for
-                }
-                if (std::isdigit(data[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
-                    cout << mensagem << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
-                    return false;
-                }
-            }
-            if(data[2] == '/' && data[5] == '/'){ // pra verificar se a "/" está colocada de maneira correta na data inserida
-                    return true; // caso sim, o programa funciona normalmente
-            }
-            else{
-                cout << mensagem; // caso não, a mensagem de erro é passada
-                return false;
-            }
-        }
-    }
-}
-
-bool verificaSeDataExiste(int dia, int mes, int ano){ // função que verifica se o dia, mês, ou ano inserido existe, caso não, o usuário recebe uma mensagem de erro
-
-    string mensagem = "A data está incorreta, verifique se digitou corretamente"; // mensagem de erro
-
-    if (ano > anoMAXIMO || ano < anoMINIMO){ // anoMAXIMO definido como 9999 e anoMINIMO definido como 1950, pois ultrapassa a idade de trabalho
-        cout << "Você ultrapassou a idade para trabalhar.\nTente digitar uma data acima de 1940\n";
-        return false; // e o programa entra novamente no laço de repetição pedindo ao usuário que digite uma data válida, se aplicando a todos os "return false" desta função
-    }
-    if (mes < 1 || mes > 12){ // verifica se o mês inserido está entre 1 e 12
-        cout << mensagem << endl;
-        return false;
-    }
-    if (dia < 1 || dia > 31){ // verifica se o dia inserido está entre 0 e 31
-        cout << mensagem << endl;
-        return false;
-    }
-    if (mes == 2){ // caso o mês inserido seja, fevereiro, o programa não permite dias acima do valor 28
-        if(dia > 28){
-            cout << mensagem << endl;
-            return false;
-        }
-    }
-    else if(mes == 1 || mes == 3|| mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){ // todos os meses com dias até 31
-        if(dia >= 31){
-            cout << mensagem << endl;
-            return false;
-        }
-    }
-    else // como todos os outros meses fora fevereiro, possuem dia até no máximo 31, os outros meses possuem dias até 30
-        if(dia >= 30){
-            cout << mensagem << endl;
-            return false;
-        }
-    return true;
-}
-
-bool verificaCEP(string CEP){
-
-    string mensagem = "O CEP está incorreto, verifique se digitou corretamente"; // mensagem de erro
-
-    if(CEP.size() < 8 || CEP.size() > 9){
-        cout << mensagem << endl;
-        return false;
-    }
-
-    for(int i = 0; i < CEP.size(); i++){
-
-        if(CEP.size() == 9){
-            if(CEP[5] != '-'){
-                cout << mensagem << endl;
-                return false;
-            }
-            else{
-                if (std::isdigit(CEP[i]) == 0 && i != 5){
-                    cout << mensagem << endl;
-                    return false;
-                }
-            }
-        }
-        else{
-            if (std::isdigit(CEP[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
-                cout << mensagem << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
-                return false;
-            }
-        }
-    }
-}
-
-bool trataSalario(string salario){
-
-    for(int i = 0; i < salario.size(); i++){
-        if (std::isdigit(salario[i]) == 0 && salario[i] != ','){
-            if(salario[i] == '.'){
-                cout << "Caso haja casas decimais após o salário utilize ',' e não '.'\n";
-                return false;
-            }
-            else{
-                cout << "Salário inválido, tente digitar um salário válido!" << endl;
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
 int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tipo do funcionario e lê os dados do funcionario que vai ser cadastrado, chamando o construtor depndendo do tipo de funcionario
-    
     string codigo, nome, CEP, numeroCasa, telefone, dataIni, areaSup, areaForm, nivelFormacao; //informações que serão enviadas no construtor dependendo do tipo de funcionario
     double salario;
-    string tipo, salarioCerto;
-    int dia, mes, ano, tipoFuncionario; // variaveis tipo int, como dia mes e ano, e tipoFuncionario, para saber se o funcionario é operario, gerente, etc
-    bool executando = true; // AGUARDANDO CLASSE TRATA ERROS variável tipo bool utilizada para sair de todos os laços while de repetição utilizados para a entrada do usuário
-    int i;
+    string tipo, salarioCerto, confirmacao;
+    int i, dia, mes, ano, tipoFuncionario; // variaveis tipo int, como dia mes e ano, e tipoFuncionio, para saber se o funcionario é operario, gerente, etc
 
     while(1){
-        bool saiu = true;
-        cout << "______MENU DE CADASTRO DE FUNCIONARIOS______" << endl << endl << // menu para o cadastro de funcionarios
-                "   Digite o tipo do Funcionario a ser cadastrado(0-4): " << endl << 
-                "   1 - operario." << endl <<
-                "   2 - gerente." << endl <<
-                "   3 - diretor." << endl <<
-                "   4 - presidente." << endl <<
-                "   0 - voltar" << endl;
-        
-        cout << "-> ";
+
+        cout << "Digite o tipo do Funcionario: " << endl << // menu para o cadastro de funcionarios
+                "1 - operario." << endl <<
+                "2 - gerente." << endl <<
+                "3 - diretor." << endl <<
+                "4 - presidente." << endl <<
+                "0 - voltar" << endl;
+
         getline(cin, tipo); // ler o tipo de funcionario
 
-        system("cls");
-
-            try{
-                verificaSeTemLetras(tipo); //verifica se a opção do menu tem letras
-                tipoFuncionario = stoi(tipo);
-                if(tipoFuncionario == 0){ //se nao houver verifica se é 0 para retornar ao menu
-                    cout << "voltando...\n\n";
-                    return 0;
+        if(tipo == "0"){ // caso o usuario digite "0", ele é levado ao menu
+            cout << "\nVoltando...\n";
+            return 0;
+        }
+        else{
+            if(Tratar.VerificaSeTemLetras(tipo)){ // chamada da função pertencente a classe TrataErros, que verifica se há alguma letra na entrada
+                tipoFuncionario = stoi(tipo); // converte o a variável string para int em outra variável caso a função acima confirme que não há letras na entrada
+                if(Tratar.VerificaNumero(tipoFuncionario, 4)){ // chamada da função que verifica caso o valor digitado seja válido no menu
+                    break;
                 }
-                verificaNumero(tipoFuncionario, 4); //se n for 0 verifica se é um numero válido do menu + o valor da quantidade de opções do menu
             }
-            catch(const invalid_argument e){ //catch no posível throw do VerificaNumero
-                std::cout << e.what() << endl;
-                saiu = false; //altera a flag para que o usuario insira outra opção no menu
-            }
-
-        if(saiu){ //sai do loop se o usuario colocou uma opção válida
-            break;
         }
     }
 
-    cout << "__INSIRA AS INFORMAÇÕES DO FUNCIONARIO__" << endl << endl; //menu para ler as informações do cadastro de funcionario
+    cout << "__CADASTRAR FUNCIONARIO__" << endl; //menu para ler as informações do cadastro de funcionario
 
     cout << "Codigo do funcionario: "<< endl;
 
@@ -363,14 +200,11 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
         int indice = 0; // indice que utilizado para sair do laço caso o valor seja diferente de 0, ele sempre vai ser definido como 0 no inicio do laço
         getline(cin, codigo);
 
-        for (i = 0; i < listaFuncionarios.size(); i++){ //procura o codigo entre os usuarios cadastrados
+        for (int i = 0; i < listaFuncionarios.size(); i++){ //procura o codigo entre os usuarios cadastrados
             if(listaFuncionarios.at(i)->getCodigo() == codigo){
                 cout << "Esse código já existe, por favor digite outro." << endl;
                 indice++; //caso o codigo seja repetido o valor do indice aumenta, fazendo com que o usuario digite novamente o codigo
             }
-            //else{
-            //    break; // caso o codigo digitado nao seja repetido, ele sai do laço for, sem alterar o indice
-            //}
         }
         if(indice == 0){ // caso o valor do incice nao se altere, significa que nao existe codigos de funcionario repetidos
             break; //aqui é onde saimos do laço while, e progredimos com o cadastramento do funcionario
@@ -379,12 +213,13 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
 
     cout << "Nome: " << endl;
     getline(cin, nome);
+
     cout << "CEP: " << endl;
     while(1){
 
         getline(cin, CEP);
 
-        if(verificaCEP(CEP)){
+        if(Tratar.VerificaCEP(CEP)){ // chamada da função pertencente a classe TrataErros que verifica se o CEP digitado existe e é válido
             break;
         }
     }
@@ -392,34 +227,20 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
     cout << "Numero da casa: " << endl;
 
     while(1){
-        bool saiu = true;
-        getline(cin, numeroCasa);
-        try{
-            verificaSeTemLetras(numeroCasa);
-        }
-        catch(const invalid_argument e){ //catch no posível throw do VerificaNumero
-            std::cout << e.what() << endl;
-            saiu = false; //altera a flag para que o usuario insira outra opção no menu
-        }
 
-        if(saiu){
+        getline(cin, numeroCasa);
+
+        if(Tratar.VerificaSeTemLetras(numeroCasa)){ // chamada da função que verifica se existe alguma letra nessa entrada
             break;
         }
     }
     cout << "Telefone : " << endl;
 
     while(1){
-        bool saiu = true;
-        getline(cin, telefone);
-        try{
-            verificaSeTemLetras(numeroCasa);
-        }
-        catch(const invalid_argument e){ //catch no posível throw do VerificaNumero
-            std::cout << e.what() << endl;
-            saiu = false; //altera a flag para que o usuario insira outra opção no menu
-        }
 
-        if(saiu){
+        getline(cin, telefone);
+
+        if(Tratar.VerificaSeTemLetras(telefone)){ // chamada da função que verifica se existe alguma letra nessa entrada
             break;
         }
     }
@@ -428,14 +249,14 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
 
     while(1){ // laço de repetição que verifica a data inserida até que ela esteja correta
         getline(cin, dataIni); // escaneia a data inicial na qual o funcionario foi contratado
-        if(analisaDataValida(dataIni)){ // chamada da função que analisa se a data digitada não possui caracteres ou erros de digitação
+        if(Tratar.AnalisaDataValida(dataIni)){ // chamada da função que analisa se a data digitada não possui caracteres ou erros de digitação
 
-            for (i = 0; i < dataIni.size(); i++){ //caso a função acima funcione corretamente, cada posição da string representando dia, mes e ano, se tornam tipo int, e são enviadas a próxima função
+            for (int i = 0; i < dataIni.size(); i++){ //caso a função acima funcione corretamente, cada posição da string representando dia, mes e ano, se tornam tipo int, e são enviadas a próxima função
                 dia = stoi(dataIni.substr(0, 2)); // primeira e segunda posição da string >dd</mm/aaaa
                 mes = stoi(dataIni.substr(3, 4)); // terceira e quarta posição da string dd/>mm</aaaa
                 ano = stoi(dataIni.substr(6)); // da posição 6 e adiante da string dd/mm/>aaaa<
             }
-            if(verificaSeDataExiste(dia, mes, ano)){ // por fim, caso a data inserida seja totalmente válida, o programa sai do laço de repetição e recebe as outras informações do usuário
+            if(Tratar.VerificaSeDataExiste(dia, mes, ano)){ // por fim, caso a data inserida seja totalmente válida, o programa sai do laço de repetição e recebe as outras informações do usuário
                 break;
             }
         }
@@ -446,12 +267,40 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
     while(1){
         getline(cin, salarioCerto);
 
-        if(trataSalario(salarioCerto)){
-            salario = std::stod(salarioCerto);
+        if(Tratar.TrataSalario(salarioCerto)){ // chamada da função que verifica se o salario digitado é válido
+            salario = std::stod(salarioCerto); // converte o valor do salario para double, caso o valor digitado for correto
             break;
         }
     }
+    
+    /*
+    cout << "Deseja mesmo cadastrar o funcionario?\n";
 
+    
+    for (i = 0; i < listaFuncionarios.size(); i++){
+        exibirFuncionario(i);
+    }
+
+    cout << "\nDigite (y/n) para confirmar o cadastro\n";
+
+    while(1){
+        getline(cin, confirmacao);
+
+        if(confirmacao == "y"){
+            cout << "Funcionario Cadastrado com sucesso\nRetornando ao menu...\n\n";
+            break;
+        }
+        else if(confirmacao == "n"){
+            listaFuncionarios.erase(listaFuncionarios.begin()+i);
+            cout << "O funcionario não foi cadastrado\nRetornando ao menu...\n\n";
+            break;
+        }
+        else{
+            cout << "Entrada invalida\nTente Novamente\n";
+        }
+    }
+    */
+    
     switch (tipoFuncionario){ //switch dependendo do tipo de usuario informado
     case 1:
         listaFuncionarios.push_back(new Operador(codigo, nome, CEP, numeroCasa, telefone, dataIni, "Operario", salario)); //cria um objeto operador
@@ -496,17 +345,12 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
     int menu, indice, achado = 0;//menu = variavel para escolha do menu de edicao, indice = indice do usuario que esta sendo editado, achado = variavel para informar se um usuario foi achado para edicao
     int tipoFuncionario; // usada para se a ocupação do usuario for editada
 
-    try{
-        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
-    }
-    catch(const logic_error e){
-        std::cout << e.what() << endl;
+    if(Tratar.VerificaFuncionario(listaFuncionarios.size())){ //chamada de função para verificar se existem funcionarios na empresa, caso o resultado seja falso, o programa retorna ao menu
         return 0;
     }
-    cout << "______MENU DE EDIÇÃO DE FUNCIONARIOS______" << endl <<
-            "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl << endl; // mostrar numero de funcionarios cadastrados na empresa
+
+    cout << "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl; // mostrar numero de funcionarios cadastrados na empresa
     cout << "Insira o codigo do usuario a ser editado: " << endl;
-    cout << "-> ";
     getline(cin, codigo); //le o codigo do usuario a ser editado
 
     for (int i = 0; i < listaFuncionarios.size(); i++){ //procura o codigo entre os usuarios cadastrados
@@ -519,10 +363,8 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
         cout << "codigo invalido" << endl;
         return -1;
     }else{
-        system("cls");
         while (1){
-            cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl <<
-                    "Digite oq voce deseja editar: " << endl << //Menu de opções de edição
+            cout << "Digite oq voce deseja editar: " << endl << //Menu de opções de edição
                     "1 - Numero do código" << endl <<
                     "2 - Data de ingresso" << endl <<
                     "3 - Nome" << endl <<
@@ -530,35 +372,23 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                     "5 - Telefone" << endl <<
                     "6 - Designação" << endl <<
                     "7 - Salario" << endl <<
-                    "0 - Voltar para o menu Principal" << endl;
+                    "0 - Sair da edição" << endl;
 
-            cout << "-> ";
             cin >> menu;
             cin.ignore();
 
-            system("cls");
-
             switch (menu){ //switch case para cada opção do menu
             case 1:
-                cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                        "Insira o novo código: " << endl;
+                cout << "Insira o novo código: ";
 
                 while(1){ //laço de repetição que verifica se o codigo digitado já existe ou não
                     int indice = 0; // indice que utilizado para sair do laço caso o valor seja diferente de 0, ele sempre vai ser definido como 0 no inicio do laço
                     getline(cin, codigo);
 
                     for (int i = 0; i < listaFuncionarios.size(); i++){ //procura o codigo entre os usuarios cadastrados
-
-                        if(listaFuncionarios.size() > 1 && listaFuncionarios.at(i+1)->getCodigo() == codigo){ //caso o primeiro codigo digitado seja alterado para um codigo ja existente, esse if nao permite a mudança
-                            cout << "Esse código já existe, por favor digite outro." << endl;
-                            indice++;
-                        }
                         if(listaFuncionarios.at(i)->getCodigo() == codigo){
                             cout << "Esse código já existe, por favor digite outro: " << endl;
                             indice++; //caso o codigo seja repetido o valor do indice aumenta, fazendo com que o usuario digite novamente o codigo
-                        }
-                        else{
-                            break; // caso o codigo digitado nao seja repetido, ele sai do laço for, sem alterar o indice
                         }
                     }
                     if(indice == 0){ // caso o valor do incice nao se altere, significa que nao existe codigos de funcionario repetidos
@@ -568,77 +398,51 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
 
                 listaFuncionarios.at(indice)->setCodigo(codigo); //le e cadastra o novo codigo do funcionario
                 cout << "\nEdição concluida com sucesso\n" << endl;
-                system("pause");
-                system("cls");
                 break;
             case 2:
-                cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                        "Insira a nova data de Ingresso: " << endl;
+                cout << "Insira a nova data de Ingresso: ";
                 getline(cin,dataIni);
 
                 listaFuncionarios.at(indice)->setDataIni(dataIni); //le e cadastra a nova data de inicialização do funcionario
                 cout << "Edição concluida com sucesso" << endl;
-                system("pause");
-                system("cls");
                 break;
             case 3:
-                cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                        "Insira o novo nome: " << endl;
+                cout << "Insira o novo nome: ";
                 getline(cin,nome);
 
                 listaFuncionarios.at(indice)->setNome(nome);
                 cout << "Edição concluida com sucesso" << endl; //le e cadastra o novo nome do funcionario
-                system("pause");
-                system("cls");
                 break;
             case 4:
-                cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                        "Insira o novo CEP: " << endl;
+                cout << "Insira o novo CEP: ";
                 getline(cin,CEP);
-                cout << "Insira o novo numero da casa: " << endl;
+                cout << "Insira o novo numero da casa: ";
                 getline(cin, numeroCasa);
 
                 listaFuncionarios.at(indice)->setCEP(CEP);//le e cadastra o novo CEP do funcionario
                 listaFuncionarios.at(indice)->setNumeroCasa(numeroCasa);
                 cout << "Edição concluida com sucesso" << endl;
-                system("pause");
-                system("cls");
                 break;
             case 5:
-                cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                        "Insira o novo numero: " << endl;
+                cout << "Insira o novo numero: ";
                 getline(cin,telefone);
 
                 listaFuncionarios.at(indice)->setTelefone(telefone);//le e cadastra o novo telefone do funcionario
-                system("pause");
-                system("cls");
                 break;
             case 6:
                 while(1){
-                    bool saiu = true;
-                        cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                                "Digite a nova designação do funcionario(0-4): "<< endl << //opçao de designações possiveis para edição
-                                "1 - operario." << endl <<
-                                "2 - gerente." << endl <<
-                                "3 - diretor." << endl <<
-                                "4 - presidente." << endl;
-                        cout << "-> ";
-                        getline(cin, tipo);
-                        try{ //tratamento de erro para o menu
-                            verificaSeTemLetras(tipo);
-                            tipoFuncionario = stoi(tipo);
-                            if(tipoFuncionario == 0){
-                                cout << "voltando...\n\n";
-                                return 0;
-                            }
-                            verificaNumero(tipoFuncionario, 4);
+                    cout << "Digite a nova designação do funcionario: "<< endl << //opçao de designações possiveis para edição
+                            "1 - operario." << endl <<
+                            "2 - gerente." << endl <<
+                            "3 - diretor." << endl <<
+                            "4 - presidente." << endl;
+                    getline(cin, tipo);
+
+                    if(Tratar.VerificaSeTemLetras(tipo)){// chamada da função pertencente a classe TrataErros, que verifica se há alguma letra na entrada
+                        tipoFuncionario = stoi(tipo); // caso o tratamento acima seja aplicado, a variável é convertida para int, para proxima verificação de erro
+                        if(Tratar.VerificaNumero(tipoFuncionario, 4)){ // verifica se o número digitado é válido no menu
+                            break;
                         }
-                        catch(const invalid_argument e){
-                            std::cout << e.what() << endl;
-                            saiu = false;
-                        }
-                    if(saiu){
-                        break;
                     }
                 }
 
@@ -658,51 +462,40 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                     listaFuncionarios.push_back(new Operador(codigo, nome, CEP, numeroCasa, telefone, dataIni, "Operario", salario)); //criando o novo objeto de tipo operador
                     cout << "Edição concluida com sucesso" << endl;
                     indice = listaFuncionarios.size()-1;
-                    system("pause");
-                    system("cls");
                     break;
                 case 2:
                     listaFuncionarios.at(indice)->setDesignacao("Gerente");
-                    cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                            "Insira a nova area de supervisão: " << endl;
+                    cout << "Insira area de supervisão: ";
                     getline(cin,areaSup);
 
                     listaFuncionarios.erase(listaFuncionarios.begin()+indice);//deletando o objeto antigo
                     listaFuncionarios.push_back(new Gerente(codigo, nome, CEP, numeroCasa, telefone, dataIni, "Gerente", salario, areaSup)); //criando objeto do tipo gerente
                     cout << "Edição concluida com sucesso" << endl;
                     indice = listaFuncionarios.size()-1;
-                    system("pause");
-                    system("cls");
                     break;
                 case 3:
                     listaFuncionarios.at(indice)->setDesignacao("Diretor");
-                    cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                            "Insira a nova area de supervisão: " << endl;
+                    cout << "Insira area de supervisão: ";
                     getline(cin,areaSup);
-                    cout << "Insira a nova area de formação: " << endl;
+                    cout << "Insira area de formação: ";
                     getline(cin,areaForm);
 
                     listaFuncionarios.erase(listaFuncionarios.begin()+indice);//deletando o objeto antigo
                     listaFuncionarios.push_back(new Diretor(codigo, nome, CEP, numeroCasa, telefone, dataIni, "Diretor", salario, areaSup, areaForm)); //craindo objeto do tipo diretor
                     cout << "Edição concluida com sucesso" << endl;
                     indice = listaFuncionarios.size()-1;
-                    system("pause");
-                    system("cls");
                     break;
                 case 4:
                     listaFuncionarios.at(indice)->setDesignacao("Presidente");
-                    cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                            "Insira a nova area de formação: " << endl;
+                    cout << "Insira area de formação: ";
                     getline(cin,areaForm);
 
-                    cout << "Insira o novo nivel de formação: " << endl;
+                    cout << "Insira nivel de formação: ";
                     getline(cin,nivelFormacao);
                     listaFuncionarios.erase(listaFuncionarios.begin()+indice);//deletando o objeto antigo
                     listaFuncionarios.push_back(new Presidente(codigo, nome, CEP, numeroCasa, telefone, dataIni, "Presidente", salario, areaForm, nivelFormacao)); //criando objeto do tipo presidente
                     cout << "Edição concluida com sucesso" << endl;
                     indice = listaFuncionarios.size()-1;
-                    system("pause");
-                    system("cls");
                     break;
                 default:
                     cout << "Erro - Designação imprópria" << endl;
@@ -711,14 +504,11 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
             break;
 
             case 7:
-                cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
-                        "Insira o novo salario: " << endl; 
+                cout << "Insira o novo salario: ";
                 cin >> salario;
 
                 listaFuncionarios.at(indice)->setSalario(salario);//le e cadastra o novo salario do funcionario
                 cout << "Edição concluida com sucesso" << endl;
-                system("pause");
-                system("cls");
                 break;
             case 0:
                 cout << "Saindo da edição de funcionario..." << endl;
@@ -735,11 +525,7 @@ int GerenciadorFuncionarios::excluirFuncionario(){ //função que lê o codigo d
     string codigo;
     string confirmacao;
 
-    try{ //método try catch para capturar qualquer erro e retornar ao menu
-        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
-    }
-    catch(const logic_error e){
-        std::cout << e.what() << endl;
+    if(Tratar.VerificaFuncionario(listaFuncionarios.size())){ //chamada de função para verificar se existem funcionarios na empresa, caso o resultado seja falso, o programa retorna ao menu
         return 0;
     }
 
@@ -771,13 +557,11 @@ int GerenciadorFuncionarios::excluirFuncionario(){ //função que lê o codigo d
 
 void GerenciadorFuncionarios::exibirFuncionario(int i){ //Função que recebe um indice como parametro e mostra os dados do funcionario naquele indice
 
-    try{ //método try catch para capturar qualquer erro e retornar ao menu
-        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
-    }
-    catch(const logic_error e){
-        std::cout << e.what() << endl;
+    if(Tratar.VerificaFuncionario(listaFuncionarios.size())){ //chamada de função para verificar se existem funcionarios na empresa, caso o resultado seja falso, o programa retorna ao menu
         return;
     }
+
+    cout << "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl; // mostrar numero de funcionarios cadastrados na empresa
 
     cout << "\nCodigo do funcionario: " << listaFuncionarios.at(i)->getCodigo() << endl <<
             "   Nome: " << listaFuncionarios.at(i)->getNome() << endl <<
@@ -808,13 +592,9 @@ void GerenciadorFuncionarios::exibirFuncionario(int i){ //Função que recebe um
         }
 }
 
-void GerenciadorFuncionarios::exibirTodosFuncionarios(){ //função que exibe todos os funcionarios    
+void GerenciadorFuncionarios::exibirTodosFuncionarios(){ //função que exibe todos os funcionarios
 
-    try{ //método try catch para capturar qualquer erro e retornar ao menu
-        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
-    }
-    catch(const logic_error e){
-        std::cout << e.what() << endl;
+    if(Tratar.VerificaFuncionario(listaFuncionarios.size())){ //chamada de função para verificar se existem funcionarios na empresa, caso o resultado seja falso, o programa retorna ao menu
         return;
     }
 
@@ -825,16 +605,14 @@ void GerenciadorFuncionarios::exibirTodosFuncionarios(){ //função que exibe to
 
 void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcionario baseado em uma das tres opcoes exibidas
 
-    try{ //método try catch para capturar qualquer erro e retornar ao menu
-        verificaFuncionario(listaFuncionarios.size()); //chamada de função para verificar se existem funcionarios na empresa
-    }
-    catch(const logic_error e){
-        std::cout << e.what() << endl;
+    if(Tratar.VerificaFuncionario(listaFuncionarios.size())){ //chamada de função para verificar se existem funcionarios na empresa, caso o resultado seja falso, o programa retorna ao menu
         return;
     }
 
     string nome, enderecoBusca;
     int encontrado = 0, menu;
+
+    cout << "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl; // mostrar numero de funcionarios cadastrados na empresa
 
     cout << "Digite como você deseja buscar o funcionario: " << endl <<
                     "1 - Nome: " << endl <<
@@ -972,6 +750,12 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
 }
 
 void GerenciadorFuncionarios::concederAumento(){
+
+    if(Tratar.VerificaFuncionario(listaFuncionarios.size())){ //chamada de função para verificar se existem funcionarios na empresa, caso o resultado seja falso, o programa retorna ao menu
+        return;
+    }
+
+    cout << "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl; // mostrar numero de funcionarios cadastrados na empresa
 
     string confirmacao;
     double salario;

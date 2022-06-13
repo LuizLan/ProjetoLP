@@ -57,7 +57,6 @@ int main(){
             break;
         case 6:
             gerenciador.concederAumento();
-            cout << "Aumento concedido para todos os funcionarios" << endl;
 
             break;
         case 7:

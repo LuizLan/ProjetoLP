@@ -6,7 +6,7 @@ lango
 987
 88 988134803
 23/07/2006
-9000
+9900
 robotica e IA
 3
 Diretor
@@ -16,7 +16,7 @@ Maria
 1003
 88 988859775
 26/07/2010
-15000
+18000
 robotica e IA
 engenharia mecatronica
 4
@@ -27,7 +27,7 @@ eduardo
 1003
 88 988766534
 26/08/2003
-20000
+26000
 engenharia mecatronica
 doutorado
 2
@@ -38,7 +38,7 @@ Rafael batista
 1090
 83988888888
 08/04/2006
-7000
+7700
 producao mecanica
 2
 Gerente
@@ -48,5 +48,5 @@ luiz augusto
 1003
 88 988888888
 10/05/2007
-4000
+4400
 publicidade
