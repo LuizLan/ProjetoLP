@@ -4,15 +4,15 @@
 #include"Diretor.h"
 #include"Presidente.h"
 #include"GerenciadorFuncionarios.h"
+#include"FolhaDePagamento.h"
 
 using namespace std;
 
 int main(){
     setlocale(LC_ALL, "Portuguese");
-    int i;
     int menu;
     GerenciadorFuncionarios gerenciador;
-
+    FolhaDePagamento gerenciadorPagamento;
 
     gerenciador.lerArquivo();
 
@@ -25,7 +25,8 @@ int main(){
                 "4 - Exibir todos os funcionarios." << endl <<
                 "5 - Buscar funcionario." << endl <<
                 "6 - Conceder aumento." << endl <<
-                "7 - Exibir folha salarial" << endl <<
+                "7 - Calcular folha salarial" << endl <<
+                "8 - Exibir folha salarial" << endl <<
                 "0 - Sair do programa" << endl;
 
         cout << "-> ";
@@ -60,9 +61,11 @@ int main(){
 
             break;
         case 7:
-            
+            gerenciadorPagamento.calculaFolhaMensal(gerenciador.getListaFuncionarios());
+
             break;
         case 8:
+            gerenciadorPagamento.menuExibe(gerenciador.getListaFuncionarios());
 
             break;
         case 0:

@@ -20,9 +20,9 @@ bool TrataErros::VerificaSeTemLetras(string str) { //função para verificar se 
         return true;
 }
 
-bool TrataErros::VerificaNumero(int tipo, int tam){ //função para verificar se uma opção de menu é válida
+bool TrataErros::VerificaNumero(int valorRecebido, int tam){ //função para verificar se uma opção de menu é válida
 
-    if(tipo < 1 || tipo > tam){
+    if(valorRecebido < 0 || valorRecebido > tam){
         cout << "\nEsse número não é válido!\nTente Novamente\n\n";
         return false;
     }
@@ -95,6 +95,37 @@ bool TrataErros::VerificaCEP(string CEP){
     return true;
 }
 
+bool TrataErros::AnalisaDataValida(string data){
+    while(1){ // laço de repetição para verificar se a data inserida é inválida
+
+        string mensagem = "Data inválida, por favor digite a data no seguinte formato: DD/MM/AAAA\n"; // mensagem de erro
+
+        if(data.size() != 10){ // if para verificar se a data foi inserida da meneira correta DD/MM/AAAA = 10 caracteres
+            cout << mensagem; // mensagem de erro que sera transmitida ao usuário caso a data seja inserida incorretamente
+            return false; // e o programa entra novamente no laço de repetição pedindo ao usuário que digite uma data válida, se aplicando a todos os "return false" desta função
+        }
+        else{
+            for(int i = 0; i < data.size(); i++){
+
+                if(i == 2 || i == 5){ // caso exista '/' na posição 2 e 5 dd/mm/aaaa, esse caractere é pulado para a verificação abaixo
+                    i++; // incrementa o valor de "i" no laço for
+                }
+                if (std::isdigit(data[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
+                    cout << mensagem << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
+                    return false;
+                }
+            }
+            if(data[2] == '/' && data[5] == '/'){ // pra verificar se a "/" está colocada de maneira correta na data inserida
+                    return true; // caso sim, o programa funciona normalmente
+            }
+            else{
+                cout << mensagem; // caso não, a mensagem de erro é passada
+                return false;
+            }
+        }
+    }
+}
+
 bool TrataErros::VerificaSeDataExiste(int dia, int mes, int ano){ // função que verifica se o dia, mês, ou ano inserido existe, caso não, o usuário recebe uma mensagem de erro
 
     string mensagem = "A data está incorreta, verifique se digitou corretamente"; // mensagem de erro
@@ -131,38 +162,6 @@ bool TrataErros::VerificaSeDataExiste(int dia, int mes, int ano){ // função qu
     }
     return true;
 }
-
-bool TrataErros::AnalisaDataValida(string data){
-    while(1){ // laço de repetição para verificar se a data inserida é inválida
-
-        string mensagem = "Data inválida, por favor digite a data no seguinte formato: DD/MM/AAAA\n"; // mensagem de erro
-
-        if(data.size() != 10){ // if para verificar se a data foi inserida da meneira correta DD/MM/AAAA = 10 caracteres
-            cout << mensagem; // mensagem de erro que sera transmitida ao usuário caso a data seja inserida incorretamente
-            return false; // e o programa entra novamente no laço de repetição pedindo ao usuário que digite uma data válida, se aplicando a todos os "return false" desta função
-        }
-        else{
-            for(int i = 0; i < data.size(); i++){
-
-                if(i == 2 || i == 5){ // caso exista '/' na posição 2 e 5 dd/mm/aaaa, esse caractere é pulado para a verificação abaixo
-                    i++; // incrementa o valor de "i" no laço for
-                }
-                if (std::isdigit(data[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
-                    cout << mensagem << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
-                    return false;
-                }
-            }
-            if(data[2] == '/' && data[5] == '/'){ // pra verificar se a "/" está colocada de maneira correta na data inserida
-                    return true; // caso sim, o programa funciona normalmente
-            }
-            else{
-                cout << mensagem; // caso não, a mensagem de erro é passada
-                return false;
-            }
-        }
-    }
-}
-
 
 bool TrataErros::VerificaFuncionario(int quantidade){ //função para verificar se existem funcionarios na empresa, caso nao exista o usuario volta ao menu
 
@@ -202,10 +201,68 @@ bool TrataErros::VerificaTamanho(string str){
 }
 
 bool TrataErros::VerificaTelefone(string telefone){
-    if(telefone.size() < 11){
-        cout << "Digite a data nesse formato DDD9XXXXXXXX ex: 83912345678\n";
+
+    if(telefone.size() < 11 || telefone.size() > 14){
+        cout << "Digite a data nesse formato ex: 83912345678\n";
         return false;
     }
-    else
-        return true;
+    else if(telefone.size() == 11){ // caso não haja parênteses ou hífens na string
+
+        for(int i = 0; i < telefone.size(); i++){
+            if (std::isdigit(telefone[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
+                cout << "Essa entrada não permite letras" << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
+                return false;
+            }
+        }
+        return true; // caso nao haja letras após todo o for, caso não haja erros o programa retorna true
+    }
+    else if(telefone.size() == 12){ // para o formado de data ex: 8391234-5678
+        if(telefone[7] != '-'){
+            cout << "O formato de data está inválido\nTente Novamente\n";
+            return false;
+        }
+        else{
+            for(int i = 0; i < telefone.size(); i++){
+                if(i == 7){
+                    i++;
+                }
+                if (std::isdigit(telefone[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
+                    cout << "Essa entrada não permite letras" << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    else if(telefone.size() > 12){
+        if(telefone[0] != '(' || telefone[3] != ')'){
+            cout << "O formato de data está inválido\nTente Novamente\n";
+            return false;
+        }
+        else if(telefone.size() == 14 && telefone[9] != '-'){
+            cout << "O formato de data está inválido\nTente Novamente\n";
+            return false;
+        }
+        else{
+            for(int i = 0; i < telefone.size(); i++){
+                if(i == 0 || i == 3){
+                    i++; // incrementa o valor de "i" no laço for para que nao seja analisado o parenteses na função isdigit
+                }
+                else if(telefone.size() == 14){
+                    if(i == 9){
+                        i++;
+                    }
+                }
+                if (std::isdigit(telefone[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
+                    cout << "Essa entrada não permite letras" << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
+                    return false;
+                }
+            }
+            return true; //caso a data passe pelas seguintes verificações e não haja algum erro, a função retornará true
+        }
+    }
+    else{
+        cout << "Erro\nTente Novamente\n";
+        return false;
+    }
 }

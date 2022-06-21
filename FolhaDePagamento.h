@@ -1,19 +1,26 @@
-#include"GerenciadorFuncionarios.h"
+#include "GerenciadorFuncionarios.h"
 
 #pragma once
 
-class FolhaDePagamento{
+class FolhaDePagamento:public GerenciadorFuncionarios
+{
+    public:
+        FolhaDePagamento();
+        virtual ~FolhaDePagamento();
 
-public:
-    FolhaDePagamento();
-    virtual ~FolhaDePagamento();
+        int geraDias();
+        int geraHorasExtras();
 
-    /*void calcularFolhaDePagamento(int mes, vector<Funcionario*> listaFuncionarios);
-    void exibirFolhaDePagamento(vector<Funcionario*> listaFuncionarios);*/
+        double calculaSalarioBruto(int dias, int horas, int indice, vector<Funcionario*> listaFuncionarios);
+        double descontaINSS(double bruto);
+        double descontaIR(double bruto, double inss);
 
-protected:
+        void calculaFolhaMensal(vector<Funcionario*> listaFuncionarios);
+        void exibeFolhaSalario(vector<Funcionario*> listaFuncionarios);
+        void exibeFolhaMensal();
+        void exibeFolhaAnual();
+        int menuExibe(vector<Funcionario*> listaFuncionarios);
 
-private:
-    //int folhasFeitas[15] = {};
-
+    private:
+        int checaFolha[12];
 };
