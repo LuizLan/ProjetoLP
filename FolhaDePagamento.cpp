@@ -104,20 +104,20 @@ void FolhaDePagamento::calculaFolhaMensal(vector<Funcionario*> listaFuncionarios
     cout << "Digite o ano que sera calculado(AAAA): " << endl;
     getline(cin, ano);
 
-    dataFolha = mes + ano + "pagamento.txt";
+    dataFolha = "./FolhasPagamento/" + mes + ano + "pagamento.txt";
     fs.open(dataFolha, fstream::in);
 
     if(fs.is_open()){
-        cout << "Folha de pagamento desse mes anteriormente realizada. Voltando ao menu..." << endl;
+        cout << "Folha de pagamento desse mes anteriormente realizada." << endl;
         fs.close();
-        Sleep(5);
+        system("pause");
         system("cls");
     }else{
         fs.open(dataFolha, fstream::out);
 
         if(!fs.is_open()){
-            std::cout << "Erro ao abrir arquivo. Voltando ao menu...\n";
-            Sleep(5);
+            std::cout << "Erro ao abrir arquivo.\n";
+            system("pause");
             system("cls");
             return;
         }
@@ -237,7 +237,7 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
 
     system("cls");
 
-    dataFolha = mes + ano + "pagamento.txt";
+    dataFolha = "./FolhasPagamento/" + mes + ano + "pagamento.txt";
     
     fs.open(dataFolha, fstream::in);
 
@@ -347,7 +347,7 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
     cout << "-> ";
     getline(cin, ano);
 
-    dataFolha = mes + ano + "pagamento.txt";
+    dataFolha = "./FolhasPagamento/" + mes + ano + "pagamento.txt";
 
     fs.open(dataFolha, fstream::in);
 
@@ -419,7 +419,7 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
             mes = out.str();
         }
 
-        data = mes + ano + "pagamento.txt";
+        data = "./FolhasPagamento/" + mes + ano + "pagamento.txt";
 
         fs.open(data, fstream::in);
 

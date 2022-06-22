@@ -32,7 +32,7 @@ int GerenciadorFuncionarios::lerArquivo(){ //le o arquivo linha por linha e cria
     double salario;
     int tipo; // 1 = operador,2 = gerente,3 = diretor,4 = presidente
 
-    fs.open("listaDeFuncionarios.txt", fstream::in);
+    fs.open("./ListaFuncionarios/listaDeFuncionarios.txt", fstream::in);
     if(!fs.is_open()){
         //std::cout << "Erro ao abrir arquivo para leitura\n";
         return 0;
@@ -81,7 +81,7 @@ int GerenciadorFuncionarios::lerArquivo(){ //le o arquivo linha por linha e cria
 void GerenciadorFuncionarios::salvarArquivo(){ //salva a listaDeFuncionarios em um arquivo
     fstream fs;
 
-    fs.open("listaDeFuncionarios.txt", fstream::out);
+    fs.open("./ListaFuncionarios/listaDeFuncionarios.txt", fstream::out);
     if (!fs.is_open()){
         std::cout << "Erro ao abrir arquivo para escrita" << endl;
     }
