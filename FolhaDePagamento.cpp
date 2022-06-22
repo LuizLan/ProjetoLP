@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include "TrataErros.h"
 #include <iomanip>
+#include <Windows.h>
 
 using namespace std;
 
@@ -41,7 +42,7 @@ int FolhaDePagamento::geraHorasExtras(){
     if(horas%2 == 0){
         return horas;
     }else{
-        return 1;
+        return 0;
     }
 }
 
@@ -93,8 +94,10 @@ double FolhaDePagamento::descontaIR(double bruto, double inss){
 void FolhaDePagamento::calculaFolhaMensal(vector<Funcionario*> listaFuncionarios){
     fstream fs;
     string dataFolha, mes, ano;
-    int dias, horas;
+    int dias, horas, m, a, mesA, anoA; //m = mes, a = ano. Serão utilizados para verificar se o funcionário já estava trabalhando na data selecionada.
     double bruto, liquido, inss, ir, totalBruto = 0, totalLiquido = 0;
+
+    cout << "____MENU DO CALCULO DA FOLHA DE PAGAMENTO____" << "\n\n";
 
     cout << "Digite o mes que sera calculado(01-12): " << endl;
     getline(cin, mes);
@@ -105,42 +108,113 @@ void FolhaDePagamento::calculaFolhaMensal(vector<Funcionario*> listaFuncionarios
     fs.open(dataFolha, fstream::in);
 
     if(fs.is_open()){
-        cout << "Folha de pagamento desse mes anteriormente realizada. Por favor, escolher outro mes." << endl;
+        cout << "Folha de pagamento desse mes anteriormente realizada. Voltando ao menu..." << endl;
         fs.close();
+        Sleep(5);
+        system("cls");
     }else{
         fs.open(dataFolha, fstream::out);
 
         if(!fs.is_open()){
-            std::cout << "Erro ao abrir arquivo.\n";
+            std::cout << "Erro ao abrir arquivo. Voltando ao menu...\n";
+            Sleep(5);
+            system("cls");
             return;
         }
 
         fs << "FOLHA DE PAGAMENTO DO MES " << mes << " E ANO " << ano << endl;
 
+        mesA = stoi(mes); 
+        anoA = stoi(ano);
+
         for(int i = 0; i < listaFuncionarios.size(); i++){
-            dias = geraDias();
-            horas = geraHorasExtras();
-            bruto = calculaSalarioBruto(dias, horas, i, listaFuncionarios);
-            inss = descontaINSS(bruto);
-            ir = descontaIR(bruto, inss);
-            liquido = bruto - inss - ir;
+           
+            m = stoi(listaFuncionarios.at(i)->getDataIni().substr(3, 4)); // terceira e quarta posição da string dd/>mm</aaaa
+            a = stoi(listaFuncionarios.at(i)->getDataIni().substr(6)); // da posição 6 e adiante da string dd/mm/>aaaa<
+            
+            if(a <= anoA){         //Caso o funcionário não esteja ativo nesse ano.
+                if(m <= mesA){     //Caso o funcionário não esteja ativo nesse mês.
 
-            totalBruto += bruto;
-            totalLiquido += liquido;
+                    dias = geraDias();
+                    horas = geraHorasExtras();
+                    bruto = calculaSalarioBruto(dias, horas, i, listaFuncionarios);
+                    inss = descontaINSS(bruto);
+                    ir = descontaIR(bruto, inss);
+                    liquido = bruto - inss - ir;
 
-            fs << listaFuncionarios.at(i)->getCodigo() << endl;
-            fs << listaFuncionarios.at(i)->getNome() << endl;
-            fs << setprecision(2) << fixed << bruto << endl;
-            fs << setprecision(2) << fixed << inss << endl;
-            fs << setprecision(2) << fixed << ir << endl;
-            fs << setprecision(2) << fixed << liquido << endl;
+                    totalBruto += bruto;
+                    totalLiquido += liquido;
+
+                    fs << listaFuncionarios.at(i)->getCodigo() << endl;
+                    fs << listaFuncionarios.at(i)->getNome() << endl;
+                    fs << setprecision(2) << fixed << bruto << endl;
+                    fs << setprecision(2) << fixed << inss << endl;
+                    fs << setprecision(2) << fixed << ir << endl;
+                    fs << setprecision(2) << fixed << liquido << endl;
+
+                }        
+                
+            }
+           
         }
             fs << "=========" << endl;
             fs << totalBruto << endl;
             fs << totalLiquido << endl;
 
             fs.close();
+            cout << "Folha de pagamento calculada com suceso. Retornando ao menu..." << endl;
+            Sleep(5000);
+            system("cls");
     }
+}
+
+int FolhaDePagamento::menuExibe(vector<Funcionario*> listaFuncionarios){
+    string tipo;
+    int opcao;
+
+    while(1){
+
+        cout << "____MENU DE EXIBICAO DA FOLHA DE PAGAMENTO____\n\n";
+
+        cout << "Digite o tipo de folha desejada: " << endl <<
+                "1 - folha salarial mensal (funcionario)." << endl <<
+                "2 - folha salarial mensal (empresa)." << endl <<
+                "3 - folha salarial anual (empresa)." << endl <<
+                "0 - voltar ao menu principal" << endl;
+        cout << "-> ";
+        getline(cin, tipo);
+
+        if(tipo == "0"){ // caso o usuario digite "0", ele é levado ao menu
+            cout << "\nVoltando...\n";
+            system("cls");
+            return 0;
+        }else{
+            system("cls");
+            if(Trata.VerificaSeTemLetras(tipo)){ // chamada da função pertencente a classe TrataErros, que verifica se há alguma letra na entrada
+                opcao = stoi(tipo); // converte o a variável string para int em outra variável caso a função acima confirme que não há letras na entrada
+                if(Trata.VerificaNumero(opcao, 3)){ // chamada da função que verifica caso o valor digitado seja válido no menu
+                    break;
+                }
+            }
+        }
+    }
+
+    switch(opcao){
+    case 1:
+        system("cls");
+        exibeFolhaSalario(listaFuncionarios);
+        break;
+    case 2:
+        system("cls");
+        exibeFolhaMensal();
+        break;
+    case 3:
+        system("cls");
+        exibeFolhaAnual();
+        break;
+    }
+
+    return 0;
 }
 
 void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios){
@@ -151,34 +225,48 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
     string key, codigo, mes, ano, dataFolha, line;
     int menu, encontrado = 0;
 
+    cout << "____MENU DE EXIBICAO DA FOLHA DE PAGAMENTO DO FUNCIONARIO____\n\n";
+
     cout << "Digite o mes desejado (01 - 12): " << endl;
+    cout << "-> ";
     getline(cin, mes);
 
     cout << "Digite o ano desejado (AAAA): " << endl;
+    cout << "-> ";
     getline(cin, ano);
 
+    system("cls");
+
     dataFolha = mes + ano + "pagamento.txt";
+    
+    fs.open(dataFolha, fstream::in);
 
-    while(1){
-        cout << "Digite como você deseja buscar o funcionario: " << endl <<
-        "1 - Nome: " << endl <<
-        "2 - Codigo: " << endl <<
-        "0 - Voltar" << endl;
+    if(!fs.is_open()){
+        cout << "\nA folha salarial nesta data ainda nao foi calculada.\n" << endl;
+        system("pause");
+        system("cls");
+        return;
+    }else{
+        cout << "____MENU DE EXIBICAO DA FOLHA DE PAGAMENTO DO FUNCIONARIO____\n\n";
+        while(1){
+            cout << "Digite como voce deseja buscar o funcionario: " << endl <<
+            "1 - Nome(sensivel a CAPS): " << endl <<
+            "2 - Codigo: " << endl <<
+            "0 - Voltar para o menu principal" << endl;
 
-        cin >> menu;
-        cin.ignore();
+            cin >> menu;
+            cin.ignore();
 
-        if(menu == 0){ // caso o usuario digite "0", ele é levado ao menu
-            cout << "\nVoltando...\n";
-            return;
-        }
-
-        fs.open(dataFolha, fstream::in);
-
-        if(fs.is_open()){
+            if(menu == 0){ // caso o usuario digite "0", ele é levado ao menu
+                cout << "\nVoltando...\n";
+                system("cls");
+                return;
+            }
 
             switch (menu){
             case 1:{ //nome
+                system("cls");
+                cout << "____MENU DE EXIBICAO DA FOLHA DE PAGAMENTO DO FUNCIONARIO____\n\n";
                 cout << "Insira o nome do Funcionario a ser procurado: " << endl;
                 getline(cin, key);
 
@@ -203,10 +291,13 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
                 if (encontrado==0){
                     cout << "nenhum funcionario encontrado" << endl;
                 }
-
+                system("pause");
+                system("cls");
                 return;
             }
             case 2:{
+                system("cls");
+                cout << "____MENU DE EXIBICAO DA FOLHA DE PAGAMENTO DO FUNCIONARIO____\n\n";
                 cout << "Insira o codigo do Funcionario a ser procurado: " << endl;
                 getline(cin, key);
 
@@ -233,30 +324,34 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
                 if (encontrado == 0){
                     cout << "nenhum funcionario encontrado" << endl;
                 }
+                system("pause");
+                system("cls");
                 return;
             }
             }
-        }else{
-            cout << "\nA folha salarial nesta data ainda não foi calculada.\n" << endl;
         }
-
     }
-
 }
 
  void FolhaDePagamento::exibeFolhaMensal(){
     string line, mes, ano, dataFolha;
     fstream fs;
 
+    cout << "____MENU DE EXIBICAO DA FOLHA DE PAGAMENTO DA EMPRESA (MENSAL)____\n\n";
+
     cout << "Digite o mes que sera exibido(01 - 12): " << endl;
+    cout << "-> ";
     getline(cin, mes);
 
     cout << "Digite o ano que sera exibido(AAAA): " << endl;
+    cout << "-> ";
     getline(cin, ano);
 
     dataFolha = mes + ano + "pagamento.txt";
 
     fs.open(dataFolha, fstream::in);
+
+    system("cls");
 
     if(fs.is_open()){
         getline(fs, line);
@@ -286,17 +381,18 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
                 break;
 
             }
-
         }
+        system("pause");
+        system("cls");
 
     }else{
         cout << "Erro ao abrir arquivo." << endl;
+        system("pause");
+        system("cls");
         return;
-
     }
 
     fs.close();
-
  }
 
  void FolhaDePagamento::exibeFolhaAnual(){
@@ -304,10 +400,14 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
     fstream fs;
     double totalBruto = 0, totalLiquido = 0;
 
+    cout << "____MENU DE EXIBICAO DA FOLHA DE PAGAMENTO DA EMPRESA (ANUAL)____\n\n";
+
     cout << "Digito o ano desejado (AAAA)" << endl;
     getline(cin, ano);
 
-    cout << "\n===========Folha de Pagamento Anual===========\n" << endl;
+    system("cls");
+
+    cout << "\n===========Folha de Pagamento Anual (" << ano << ")===========\n" << endl;
 
     for(int i = 0; i < 12; i++){
 
@@ -349,7 +449,7 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
 
             fs.close();
         }else{
-            cout << "Folha Salarial do mes " << mes << " ainda não foi calculada." << endl <<
+            cout << "Folha Salarial do mes " << mes << " ainda nao foi calculada." << endl <<
             "=======================================\n" << endl;
         }
     }
@@ -357,50 +457,8 @@ void FolhaDePagamento::exibeFolhaSalario(vector<Funcionario*> listaFuncionarios)
     "Soma total dos salarios brutos pagos no ano de " << ano << ": R$" << totalBruto << endl <<
     "Soma total dos salarios liquidos pagos no ano de " << ano << ": R$" << totalLiquido << endl << endl;
 
+    system("pause");
+    system("cls");
+
     return;
-}
-
-int FolhaDePagamento::menuExibe(vector<Funcionario*> listaFuncionarios){
-    string tipo;
-    int opcao;
-
-    while(1){
-
-        cout << "Digite o tipo de folha desejada: " << endl <<
-                "1 - folha salarial mensal (empresa)." << endl <<
-                "2 - folha salarial mensal (funcionario)." << endl <<
-                "3 - folha salarial anual (empresa)." << endl <<
-                "0 - voltar" << endl;
-
-        getline(cin, tipo);
-
-        if(tipo == "0"){ // caso o usuario digite "0", ele é levado ao menu
-            cout << "\nVoltando...\n";
-            return 0;
-        }else{
-            if(Trata.VerificaSeTemLetras(tipo)){ // chamada da função pertencente a classe TrataErros, que verifica se há alguma letra na entrada
-                opcao = stoi(tipo); // converte o a variável string para int em outra variável caso a função acima confirme que não há letras na entrada
-                if(Trata.VerificaNumero(opcao, 3)){ // chamada da função que verifica caso o valor digitado seja válido no menu
-                    break;
-                }
-            }
-        }
-    }
-
-    switch(opcao){
-    case 1:
-        system("cls");
-        exibeFolhaMensal();
-        break;
-    case 2:
-        system("cls");
-        exibeFolhaSalario(listaFuncionarios);
-        break;
-    case 3:
-        system("cls");
-        exibeFolhaAnual();
-        break;
-    }
-
-    return 0;
 }

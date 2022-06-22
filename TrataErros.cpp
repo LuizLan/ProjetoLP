@@ -13,7 +13,7 @@ bool TrataErros::VerificaSeTemLetras(string str) { //função para verificar se 
 
     for (int i = 0; i < str.size(); i++){
         if (std::isdigit(str[i]) == 0){
-            cout << "\nEssa entrada não permite nenhum tipo de letras!!\nTente Novamente\n\n";
+            cout << "\nEssa entrada nao permite nenhum tipo de letras!!\nTente Novamente\n\n";
             return false;
         }
     }
@@ -23,7 +23,7 @@ bool TrataErros::VerificaSeTemLetras(string str) { //função para verificar se 
 bool TrataErros::VerificaNumero(int valorRecebido, int tam){ //função para verificar se uma opção de menu é válida
 
     if(valorRecebido < 0 || valorRecebido > tam){
-        cout << "\nEsse número não é válido!\nTente Novamente\n\n";
+        cout << "\nEsse numero nao eh valido!\nTente Novamente\n\n";
         return false;
     }
 
@@ -32,7 +32,7 @@ bool TrataErros::VerificaNumero(int valorRecebido, int tam){ //função para ver
 
 bool TrataErros::VerificaCEP(string CEP){
 
-    string linha, url, mensagem = "O CEP está incorreto, verifique se digitou corretamente"; // mensagem de erro
+    string linha, url, mensagem = "O CEP esta incorreto, verifique se digitou corretamente"; // mensagem de erro
     fstream fs;
     string verificaErro;
     int i = 0;
@@ -128,10 +128,10 @@ bool TrataErros::AnalisaDataValida(string data){
 
 bool TrataErros::VerificaSeDataExiste(int dia, int mes, int ano){ // função que verifica se o dia, mês, ou ano inserido existe, caso não, o usuário recebe uma mensagem de erro
 
-    string mensagem = "A data está incorreta, verifique se digitou corretamente"; // mensagem de erro
+    string mensagem = "A data esta incorreta, verifique se digitou corretamente"; // mensagem de erro
 
     if (ano > 9999 || ano < 1940){ // 9999 a data maxima que um usuario pode ser cadastrado e 1940 a data minima, pois ultrapassa a idade de trabalho
-        cout << "Você ultrapassou a idade para trabalhar.\nTente digitar uma data acima de 1940\n";
+        cout << "Voce ultrapassou a idade para trabalhar.\nTente digitar uma data acima de 1940\n";
         return false; // e o programa entra novamente no laço de repetição pedindo ao usuário que digite uma data válida, se aplicando a todos os "return false" desta função
     }
     if (mes < 1 || mes > 12){ // verifica se o mês inserido está entre 1 e 12
@@ -166,7 +166,7 @@ bool TrataErros::VerificaSeDataExiste(int dia, int mes, int ano){ // função qu
 bool TrataErros::VerificaFuncionario(int quantidade){ //função para verificar se existem funcionarios na empresa, caso nao exista o usuario volta ao menu
 
     if(quantidade == 0){
-        cout << "\nNão existem funcionarios disponiveis\n"
+        cout << "\nNao existem funcionarios disponiveis\n"
                           "Redirecionando ao Menu...\n\n";
         return true;
     }
@@ -178,11 +178,11 @@ bool TrataErros::TrataSalario(string salario){
     for(int i = 0; i < salario.size(); i++){
         if (std::isdigit(salario[i]) == 0 && salario[i] != ','){
             if(salario[i] == '.'){
-                cout << "Caso haja casas decimais após o salário utilize ',' e não '.'\n";
+                cout << "Caso haja casas decimais apos o salario utilize ',' e não '.'\n";
                 return false;
             }
             else{
-                cout << "Salário inválido, tente digitar um salário válido!" << endl;
+                cout << "Salario invalido, tente digitar um salario valido!" << endl;
                 return false;
             }
         }
@@ -203,7 +203,7 @@ bool TrataErros::VerificaTamanho(string str){
 bool TrataErros::VerificaTelefone(string telefone){
 
     if(telefone.size() < 11 || telefone.size() > 14){
-        cout << "Digite a data nesse formato ex: 83912345678\n";
+        cout << "Digite o numero nesse formato ex: 83912345678\n";
         return false;
     }
     else if(telefone.size() == 11){ // caso não haja parênteses ou hífens na string
@@ -218,7 +218,7 @@ bool TrataErros::VerificaTelefone(string telefone){
     }
     else if(telefone.size() == 12){ // para o formado de data ex: 8391234-5678
         if(telefone[7] != '-'){
-            cout << "O formato de data está inválido\nTente Novamente\n";
+            cout << "O formato de numero esta invalido\nTente Novamente\n";
             return false;
         }
         else{
@@ -236,11 +236,11 @@ bool TrataErros::VerificaTelefone(string telefone){
     }
     else if(telefone.size() > 12){
         if(telefone[0] != '(' || telefone[3] != ')'){
-            cout << "O formato de data está inválido\nTente Novamente\n";
+            cout << "O formato de data esta invalido\nTente Novamente\n";
             return false;
         }
         else if(telefone.size() == 14 && telefone[9] != '-'){
-            cout << "O formato de data está inválido\nTente Novamente\n";
+            cout << "O formato de data esta invalido\nTente Novamente\n";
             return false;
         }
         else{
@@ -254,7 +254,7 @@ bool TrataErros::VerificaTelefone(string telefone){
                     }
                 }
                 if (std::isdigit(telefone[i]) == 0){ // verifica se em qualquer posição da string data há algum caractere que não seja um número
-                    cout << "Essa entrada não permite letras" << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
+                    cout << "Essa entrada nao permite letras" << endl; // caso não haja número em qualquer posição da string data, uma mensagem de erro retorna ao usuário
                     return false;
                 }
             }

@@ -3,7 +3,6 @@
 #include<vector> //vetor
 #include<cstdlib> //num aleatorio
 #include<ctime> //tempo
-#include<locale.h>
 
 #pragma once
 

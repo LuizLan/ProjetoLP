@@ -6,8 +6,8 @@
 #include<locale>
 #include<locale.h>
 #include<fstream>
-#include "TrataErros.h"
-#include <windows.h>
+#include"TrataErros.h"
+#include<windows.h>
 
 using namespace std;
 
@@ -25,7 +25,7 @@ vector<Funcionario*> GerenciadorFuncionarios::getListaFuncionarios(){ //get para
     return listaFuncionarios;
 }
 
-void GerenciadorFuncionarios::lerArquivo(){ //le o arquivo linha por linha e cria um objeto operador, gerente, diretor, presidente dependendo do tipo
+int GerenciadorFuncionarios::lerArquivo(){ //le o arquivo linha por linha e cria um objeto operador, gerente, diretor, presidente dependendo do tipo
     fstream fs;
     Funcionario* funcionario01;
     string codigo, nome, CEP, numeroCasa, telefone, dataIni, designacao, areaSup, areaForm, nivelFormacao; // dataIni = data inicialização, designação = operador, gerente, diretor, presidente
@@ -34,8 +34,8 @@ void GerenciadorFuncionarios::lerArquivo(){ //le o arquivo linha por linha e cri
 
     fs.open("listaDeFuncionarios.txt", fstream::in);
     if(!fs.is_open()){
-        std::cout << "Erro ao abrir arquivo para leitura\n";
-        return;
+        //std::cout << "Erro ao abrir arquivo para leitura\n";
+        return 0;
     }
     while (!fs.eof()){ //fazendo a leitura de cada linha do arquivo para depois criar o objeto funcionario
         fs >> tipo;
@@ -75,7 +75,9 @@ void GerenciadorFuncionarios::lerArquivo(){ //le o arquivo linha por linha e cri
             break;
         }
     }
+    return 1;    
 }
+
 void GerenciadorFuncionarios::salvarArquivo(){ //salva a listaDeFuncionarios em um arquivo
     fstream fs;
 
@@ -117,6 +119,33 @@ void GerenciadorFuncionarios::salvarArquivo(){ //salva a listaDeFuncionarios em 
         default:
 
             break;
+        }
+    }
+}
+
+int GerenciadorFuncionarios::verificaArquivo(){
+    string confirmacao;
+
+    if(!lerArquivo()){
+        cout<<"NAO ENCONTRAMOS UMA LISTA DE FUNCIONARIOS, DESEJA CRRIAR UMA NOVA(y/n) " << endl;
+        while (1){
+            cout << "-> ";
+            getline(cin, confirmacao);
+
+            if(confirmacao == "y"){
+                cout << "OK, UMA LISTA SERA CRIADA AO ENCERRAR O PROGRAMA SE DESEJAR SALVAR.\n";
+                Sleep(5000);
+                system("cls");
+                return 1;
+            }
+            else if(confirmacao == "n"){
+                cout << "ENCERRANDO O PROGRAMA...";
+                Sleep(5000);
+                return 0;
+            }
+            else{
+                cout << "Entrada invalida, insira outra(y/n)\n";
+            }
         }
     }
 }
@@ -170,13 +199,15 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
 
     while(1){
 
-        cout << "Digite o tipo do Funcionario: " << endl << // menu para o cadastro de funcionarios
-                "1 - operario." << endl <<
-                "2 - gerente." << endl <<
-                "3 - diretor." << endl <<
-                "4 - presidente." << endl <<
-                "0 - voltar" << endl;
-
+        cout << "______MENU DE CADASTRO DE FUNCIONARIOS______" << endl << endl << // menu para o cadastro de funcionarios
+                "   Digite o tipo do Funcionario a ser cadastrado(0-4): " << endl << 
+                "   1 - operario." << endl <<
+                "   2 - gerente." << endl <<
+                "   3 - diretor." << endl <<
+                "   4 - presidente." << endl <<
+                "   0 - voltar ao menu principal" << endl;
+        
+        cout << "-> ";
         getline(cin, tipo); // ler o tipo de funcionario
 
         if(tipo == "0"){ // caso o usuario digite "0", ele é levado ao menu
@@ -201,7 +232,9 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
         }
     }
 
-    cout << "__CADASTRAR FUNCIONARIO__" << endl; //menu para ler as informações do cadastro de funcionario
+    system("cls");
+
+     cout << "__INSIRA AS INFORMAÇÕES DO FUNCIONARIO__ \n\n"; //menu para ler as informações do cadastro de funcionario
 
     cout << "Codigo do funcionario: "<< endl;
 
@@ -240,9 +273,9 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
 
         if(nome == "Anya"){
             cout << "\t\t\t\t-~-~-~-Parabéns, você descobriu um Easter Egg-~-~-~-\n";
-            Sleep(3000);
+            Sleep(5000);
             cout << "\t\t\t\t\t\t       Aproveite\n";
-            Sleep(2000);
+            Sleep(4000);
 
             cout << "    .^!?J55PGGGGGGG5J?::::::^~^7J~~~~~~~~7!~~~~~~~~~~~~~~~~~~~^^^^^!!^^^^^^:::^???GPPPPGGGGP5YJ7~.  \n"
     "    5BGGGGGGGGGGGGGP!::::::^^~??~~~~~~~~J!~~~~~~~~~~~~~~~^~^^^^^^^^^!7!^^^^^::::!?P5GGPPGGGGGGGG#Y  \n"
@@ -336,7 +369,7 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
         }
     }
 
-    cout << "Data de ingresso DD/MM/AAAA: " << endl;
+    cout << "Data de ingresso (DD/MM/AAAA): " << endl;
 
     while(1){ // laço de repetição que verifica a data inserida até que ela esteja correta
         getline(cin, dataIni); // escaneia a data inicial na qual o funcionario foi contratado
@@ -406,12 +439,14 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
         getline(cin, confirmacao); // para caso o usuário do programa queira realmente cadastrar o funcionário, ou não
         if(confirmacao == "y"){ // caso sim, ele permanece cadastrado no sistema
             cout << "Funcionario Cadastrado com sucesso\nRetornando ao menu...\n\n";
+            Sleep(6000);
             system("cls");
             break;
         }
         else if(confirmacao == "n"){ // caso não ele é apagado do sistema
             listaFuncionarios.erase(listaFuncionarios.begin()+listaFuncionarios.size()-1);
             cout << "O funcionario não foi cadastrado\nRetornando ao menu...\n\n";
+            Sleep(6000);
             system("cls");
             break;
         }
@@ -436,9 +471,10 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
         return 0;
     }
 
-    cout << "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl; // mostrar numero de funcionarios cadastrados na empresa
-    cout << "Insira o codigo do usuario a ser editado: " << endl;
-    cout << "Digite 0 para voltar ao menu" << endl;
+    cout << "______MENU DE EDIÇÃO DE FUNCIONARIOS______" << endl <<
+            "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl << endl; // mostrar numero de funcionarios cadastrados na empresa
+    cout << "Insira o codigo do usuario a ser editado, ou 0 para voltar ao menu: " << endl;
+    cout << "-> ";
 
     while(1){
         getline(cin, codigo); //le o codigo do usuario a ser editado
@@ -461,15 +497,19 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
             break;
     }
     while (1){
-        cout << "Digite oq voce deseja editar: " << endl << //Menu de opções de edição
-                "1 - Numero do código" << endl <<
-                "2 - Data de ingresso" << endl <<
-                "3 - Nome" << endl <<
-                "4 - Endereço" << endl <<
-                "5 - Telefone" << endl <<
-                "6 - Designação" << endl <<
-                "7 - Salario" << endl <<
-                "0 - Sair da edição" << endl;
+        cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl <<
+                    "Digite oq voce deseja editar: " << endl << //Menu de opções de edição
+                    "1 - Numero do código" << endl <<
+                    "2 - Data de ingresso" << endl <<
+                    "3 - Nome" << endl <<
+                    "4 - Endereço" << endl <<
+                    "5 - Telefone" << endl <<
+                    "6 - Designação" << endl <<
+                    "7 - Salario" << endl <<
+                    "0 - Voltar para o menu Principal" << endl;
+
+        cout << "-> ";
+
         while(1){
             string menuString; //tipo string para melhor tratamento de erro
             getline(cin, menuString);
@@ -481,9 +521,13 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                 }
             }
         }
+
+        system("cls");
+
         switch (menu){ //switch case para cada opção do menu
         case 1:
-            cout << "Insira o novo código: ";
+            cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
+                    "Insira o novo código: " << endl;
 
             while(1){ //laço de repetição que verifica se o codigo digitado já existe ou não
                 int indice = 0; // indice que utilizado para sair do laço caso o valor seja diferente de 0, ele sempre vai ser definido como 0 no inicio do laço
@@ -512,9 +556,12 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
 
             listaFuncionarios.at(indice)->setCodigo(codigo); //le e cadastra o novo codigo do funcionario
             cout << "\nEdição concluida com sucesso\n" << endl;
+            system("pause");
+            system("cls");
             break;
         case 2:
-            cout << "Insira a nova data de Ingresso: ";
+            cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
+                    "Insira a nova data de Ingresso: " << endl;
 
             while(1){ // laço de repetição que verifica a data inserida até que ela esteja correta
 
@@ -533,9 +580,12 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
 
             listaFuncionarios.at(indice)->setDataIni(dataIni); //le e cadastra a nova data de inicialização do funcionario
             cout << "Edição concluida com sucesso" << endl;
+            system("pause");
+            system("cls");
             break;
         case 3:
-            cout << "Insira o novo nome: ";
+            cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
+                    "Insira o novo nome: " << endl;
 
             while(1){
                 int indice = 0;
@@ -555,9 +605,12 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
 
             listaFuncionarios.at(indice)->setNome(nome);
             cout << "Edição concluida com sucesso" << endl; //le e cadastra o novo nome do funcionario
+            system("pause");
+            system("cls");
             break;
         case 4:
-            cout << "Insira o novo CEP: ";
+            cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
+                    "Insira o novo CEP: " << endl;
             while(1){
                 getline(cin, CEP);
 
@@ -565,7 +618,7 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                     break;
                 }
             }
-            cout << "Insira o novo numero da casa: ";
+            cout << "Insira o novo numero da casa: " << endl;
             while(1){
                 getline(cin, numeroCasa);
 
@@ -577,9 +630,12 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
             listaFuncionarios.at(indice)->setCEP(CEP);//le e cadastra o novo CEP do funcionario
             listaFuncionarios.at(indice)->setNumeroCasa(numeroCasa);
             cout << "Edição concluida com sucesso" << endl;
+            system("pause");
+            system("cls");
             break;
         case 5:
-            cout << "Insira o novo numero: ";
+            cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
+                    "Insira o novo numero: " << endl;
             while(1){
                 getline(cin, telefone); // lê e cadastra o novo número de telefone
 
@@ -589,14 +645,19 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
             }
 
             listaFuncionarios.at(indice)->setTelefone(telefone);//le e cadastra o novo telefone do funcionario
+            cout << "Edição concluida com sucesso" << endl;
+            system("pause");
+            system("cls");
             break;
         case 6:
             while(1){
-                cout << "Digite a nova designação do funcionario: "<< endl << //opçao de designações possiveis para edição
+                cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
+                        "Digite a nova designação do funcionario(0-4): "<< endl << //opçao de designações possiveis para edição
                         "1 - operario." << endl <<
                         "2 - gerente." << endl <<
                         "3 - diretor." << endl <<
                         "4 - presidente." << endl;
+                cout << "-> ";
                 getline(cin, tipo);
 
                 if(Tratar.VerificaSeTemLetras(tipo)){// chamada da função pertencente a classe TrataErros, que verifica se há alguma letra na entrada
@@ -623,6 +684,8 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                 listaFuncionarios.push_back(new Operador(codigo, nome, CEP, numeroCasa, telefone, dataIni, "Operario", salario)); //criando o novo objeto de tipo operador
                 cout << "Edição concluida com sucesso" << endl;
                 indice = listaFuncionarios.size()-1;
+                system("pause");
+                system("cls");
                 break;
             case 2:
                 listaFuncionarios.at(indice)->setDesignacao("Gerente");
@@ -633,6 +696,8 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                 listaFuncionarios.push_back(new Gerente(codigo, nome, CEP, numeroCasa, telefone, dataIni, "Gerente", salario, areaSup)); //criando objeto do tipo gerente
                 cout << "Edição concluida com sucesso" << endl;
                 indice = listaFuncionarios.size()-1;
+                system("pause");
+                system("cls");
                 break;
             case 3:
                 listaFuncionarios.at(indice)->setDesignacao("Diretor");
@@ -645,6 +710,8 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                 listaFuncionarios.push_back(new Diretor(codigo, nome, CEP, numeroCasa, telefone, dataIni, "Diretor", salario, areaSup, areaForm)); //craindo objeto do tipo diretor
                 cout << "Edição concluida com sucesso" << endl;
                 indice = listaFuncionarios.size()-1;
+                system("pause");
+                system("cls");
                 break;
             case 4:
                 achado = 0; // variavel reutilizada nessa área para verificar se já existe um presidente na empresa
@@ -654,7 +721,6 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                         achado++;
                         break;
                     }
-
                 }
                 if(achado == 0){
                     listaFuncionarios.at(indice)->setDesignacao("Presidente");
@@ -668,6 +734,8 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                     listaFuncionarios.push_back(new Presidente(codigo, nome, CEP, numeroCasa, telefone, dataIni, "Presidente", salario, areaForm, nivelFormacao)); //criando objeto do tipo presidente
                     cout << "Edição concluida com sucesso" << endl;
                     indice = listaFuncionarios.size()-1;
+                    system("pause");
+                    system("cls");
                     break;
                 }
                 else{
@@ -677,10 +745,10 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
                 cout << "Erro - Designação imprópria" << endl;
                 break;
             }
-        break;
-
+            break;
         case 7:
-            cout << "Insira o novo salario: ";
+            cout << "EDITANDO O FUNCIONARIO DE CODIGO: " << codigo << endl << endl <<
+                    "Insira o novo salario(p/hora): " << endl; 
             while(1){
                 getline(cin, salarioString);
 
@@ -692,6 +760,8 @@ int GerenciadorFuncionarios::editarFuncionario(){ //Função que lê o codigo do
 
             listaFuncionarios.at(indice)->setSalario(salario);//le e cadastra o novo salario do funcionario
             cout << "Edição concluida com sucesso" << endl;
+            system("pause");
+            system("cls");
             break;
         case 0:
             cout << "Saindo da edição de funcionario..." << endl;
@@ -712,9 +782,11 @@ int GerenciadorFuncionarios::excluirFuncionario(){ //função que lê o codigo d
         return 0;
     }
 
-    cout << "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl; // mostrar numero de funcionarios cadastrados na empresa
+    cout << "______MENU DE EXCLUSAO DE FUNCIONARIOS______" << endl <<
+            "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl << endl; // mostrar numero de funcionarios cadastrados na empresa
     cout << "Digite o código do funcionário que você deseja excluir:" << endl;
     cout << "Digite 0 para voltar ao menu" << endl;
+    cout << "-> ";
 
     while(1){
 
@@ -732,16 +804,18 @@ int GerenciadorFuncionarios::excluirFuncionario(){ //função que lê o codigo d
             }
         }
         if (achado==0){
-            cout << "codigo invalido" << endl;
-        }
-        else
+            cout << "codigo invalido, insira outro: " << endl;
+            cout << "-> ";
+        }else
             break;
     }
 
     for (int i = 0; i < listaFuncionarios.size(); i++){ //procura na lsita de funcionarios cadastrados o codigo lido
         if (listaFuncionarios.at(i)->getCodigo() == codigo){
             if (listaFuncionarios.at(i)->getTipo() == 3 || listaFuncionarios.at(i)->getTipo() == 4){ //se o funcionario achado for um diretor ou presidente é impossivel deletar
-                cout << "Gerentes e presidentes não podem ser excluidos" << endl;
+                cout << "\nGerentes e presidentes não podem ser excluidos" << endl;
+                system("pause");
+                system("cls");
             }else{
                 cout << "Voce deseja excluir o funcionaro de codigo: " << listaFuncionarios.at(i)->getCodigo() << " e nome: " << listaFuncionarios.at(i)->getNome() << ":(y/n) " << endl; //mensagem de confirmação de deleção
                 getline(cin,confirmacao);
@@ -749,11 +823,16 @@ int GerenciadorFuncionarios::excluirFuncionario(){ //função que lê o codigo d
             if(confirmacao == "y"){
                 listaFuncionarios.erase(listaFuncionarios.begin()+i); //deletando o funcionario
                 cout << "Funcionario apagado com sucesso" << endl;
+                system("pause");
+                system("cls");
             }else if(confirmacao == "n"){
                 cout << "Exclusão de funcionario cancelada" << endl;
+                system("pause");
+                system("cls");
             }
             else{
                 cout << "Entrada Invalida\nRetornando ao menu...\n";
+                Sleep(5000);
             }
         }
     }
@@ -767,10 +846,10 @@ void GerenciadorFuncionarios::exibirFuncionario(int i){ //Função que recebe um
 
     cout << "\nCodigo do funcionario: " << listaFuncionarios.at(i)->getCodigo() << endl <<
             "   Nome: " << listaFuncionarios.at(i)->getNome() << endl <<
-            "   Endereço: " << gerarEndereco(listaFuncionarios.at(i)->getCEP(), listaFuncionarios.at(i)->getNumeroCasa()) << endl <<
+            "   Endereco: " << gerarEndereco(listaFuncionarios.at(i)->getCEP(), listaFuncionarios.at(i)->getNumeroCasa()) << endl <<
             "   Telefone : " << listaFuncionarios.at(i)->getTelefone() << endl <<
             "   Data de ingresso: " << listaFuncionarios.at(i)->getDataIni() << endl <<
-            "   Designação: " << listaFuncionarios.at(i)->getDesignacao() << endl <<
+            "   Designacao: " << listaFuncionarios.at(i)->getDesignacao() << endl <<
             "   Salario: " << listaFuncionarios.at(i)->getSalario() << endl;
 
         switch (listaFuncionarios.at(i)->getTipo()){
@@ -800,6 +879,8 @@ void GerenciadorFuncionarios::exibirTodosFuncionarios(){ //função que exibe to
         return;
     }
 
+    cout << "EXIBINDO TODOS OS FUNCIONARIOS CADASTRADOS NA EMPRESA: \n\n";
+
     for (int i = 0; i < listaFuncionarios.size(); i++){
         exibirFuncionario(i);
     }
@@ -815,13 +896,15 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
     string menuString, nome, enderecoBusca; // menuString foi criado para o tratamento de erro
     int encontrado = 0, menu;
 
-    cout << "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl; // mostrar numero de funcionarios cadastrados na empresa
+    cout << "______MENU DE BUSCA DE FUNCIONARIOS______\n\n"<<
+            "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl << endl; // mostrar numero de funcionarios cadastrados na empresa
 
     cout << "Digite como você deseja buscar o funcionario: " << endl <<
-                    "1 - Nome: " << endl <<
-                    "2 - Data de ingresso: " << endl <<
-                    "3 - Endereco" << endl <<
-                    "0 - Voltar" << endl;
+            "1 - Nome(sensivel a CAPS): " << endl <<
+            "2 - Data de ingresso: " << endl <<
+            "3 - Endereco(sensivel a CAPS)" << endl <<
+            "0 - Voltar" << endl;
+    cout << "-> ";
 
     while(1){
         getline(cin, menuString);
@@ -834,9 +917,14 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         }
     }
 
+    system("cls");
+
     switch (menu){
     case 1: //nome
-        cout << "Insira o nome do Funcionario a ser procurado: " << endl;
+        cout << "______MENU DE BUSCA DE FUNCIONARIOS______\n\n";
+        cout << "____BUSCANDO POR NOME____\n";
+        cout << "Insira o nome do Funcionario a ser procurado(sensivel a CAPS): " << endl;
+        cout << "-> ";
         while(1){
             int indice = 0;
             getline(cin, nome);
@@ -853,7 +941,9 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
             }
         }
 
-        cout << "Exibindo funcionarios com " << nome << " no nome..." << endl;
+        system("cls");
+        cout << "EXIBINDO FUNCIONARIOS COM " << nome << " NO NOME...\n\n";
+        Sleep(5000);
 
         for(int i = 0; i < listaFuncionarios.size(); i++){//busca na lista de funcionarios o nome lido usando .find()
             if (listaFuncionarios.at(i)->getNome().find(nome) != string::npos){
@@ -864,8 +954,12 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         }
         if (encontrado==0){
             cout << "nenhum funcionario encontrado" << endl;
+            system("pause");
+            system("cls");
         }else{
-            cout << "foram encontrados: " << encontrado << " funcionario(s)." << endl;
+            cout << "\nforam encontrados: " << encontrado << " funcionario(s)." << endl;
+            system("pause");
+            system("cls");
         }
 
         break;
@@ -873,10 +967,13 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
 
         int dia, mes, ano, diaI, mesI, anoI, diaF, mesF, anoF;
 
+        cout << "______MENU DE BUSCA DE FUNCIONARIOS______\n\n";
+        cout << "____BUSCANDO POR DATA DE INGRESSO____\n\n";
         cout << "Insira o intervalo da data de ingresso a ser procurada: " << endl;
 
+        cout << "Data inicial(DD/MM/AAAA): " << endl;
         while(1){ // laço de repetição que verifica a data inserida até que ela esteja correta
-            cout << "Data inicial: ";
+            cout << "-> ";
             getline(cin, dataInicial); // escaneia a data inicial na qual o funcionario foi contratado
             if(Tratar.AnalisaDataValida(dataInicial)){ // chamada da função que analisa se a data digitada não possui caracteres ou erros de digitação
 
@@ -891,8 +988,9 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
             }
         }
 
+        cout << "Data final(DD/MM/AAAA): " << endl;
         while(1){ // laço de repetição que verifica a data inserida até que ela esteja correta
-            cout << "Data final: ";
+            cout << "-> ";
             getline(cin, dataFinal); // escaneia a data inicial na qual o funcionario foi contratado
             if(Tratar.AnalisaDataValida(dataFinal)){ // chamada da função que analisa se a data digitada não possui caracteres ou erros de digitação
 
@@ -906,6 +1004,9 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
                 }
             }
         }
+
+        cout << "EXIBINDO FUNCIONARIOS NO INTERVALO (" << dataInicial << " - " << dataFinal << ")...\n\n";
+        Sleep(5000);
 
         for (int i = 0; i < listaFuncionarios.size(); i++){
             dia = stoi(listaFuncionarios.at(i)->getDataIni().substr(0, listaFuncionarios.at(i)->getDataIni().size() - 8));
@@ -950,14 +1051,27 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
 
         if (encontrado==0){
             cout << "nenhum funcionario encontrado" << endl;
+            system("pause");
+            system("cls");
         }else{
             cout << "foram encontrados: " << encontrado << " funcionario(s)." << endl;
+            system("pause");
+            system("cls");
         }
 
         break;
-    case 3: //endereço, SERA ALTERADO QUANDO COMEÇAR A USAR CEP
-        cout << "Insira a cidade ou o bairro em que você deseja procurar: " << endl;
+    case 3: 
+
+        cout << "______MENU DE BUSCA DE FUNCIONARIOS______\n\n";
+        cout << "____BUSCANDO POR ENDERECO____\n\n";
+        cout << "Insira a rua ou o bairro em que você deseja procurar(sensivel a CAPS): " << endl;
+        cout << "-> ";
         getline(cin, enderecoBusca);
+
+        system("cls");
+
+        cout << "EXIBINDO FUNCIONARIOS NO ENDERECO (" << enderecoBusca << ")...\n\n";
+        Sleep(5000);
 
         for (int i = 0; i < listaFuncionarios.size(); i++){
             if (gerarEndereco(listaFuncionarios.at(i)->getCEP(), listaFuncionarios.at(i)->getNumeroCasa()).find(enderecoBusca) != string::npos){
@@ -967,16 +1081,21 @@ void GerenciadorFuncionarios::buscarFuncionario(){ //funcao que busca um funcion
         }
         if (encontrado==0){
             cout << "nenhum funcionario encontrado" << endl;
+            system("pause");
+            system("cls");
         }else{
             cout << "foram encontrados: " << encontrado << " funcionario(s)." << endl;
+            system("pause");
+            system("cls");
         }
         break;
-    case 0:
+    case 0:    
         system("cls");
         break;
     default:
-
         cout << "Opção Inválida para busca de funcionários" << endl;
+        system("pause");
+        system("cls");
         break;
     }
 }
@@ -987,6 +1106,7 @@ void GerenciadorFuncionarios::concederAumento(){
         return;
     }
 
+    cout << "____CONCEDER AUMENTO____\n\n";
     cout << "Há um total de: " << listaFuncionarios.size() << " funcionarios na empresa" << endl; // mostrar numero de funcionarios cadastrados na empresa
 
     string confirmacao;
@@ -994,19 +1114,28 @@ void GerenciadorFuncionarios::concederAumento(){
 
     cout << "Deseja realmente conceder aumento a todos os funcionarios? (y/n)\n";
 
-    getline(cin, confirmacao);
+    while (1){
+        cout << "-> ";
+        getline(cin, confirmacao);
 
-    if(confirmacao == "y"){
-        for (int i = 0; i < listaFuncionarios.size(); i++){
-            salario = listaFuncionarios.at(i)->getSalario() + (listaFuncionarios.at(i)->getSalario()*listaFuncionarios.at(i)->getPorcentagem());
-            listaFuncionarios.at(i)->setSalario(salario);
+        if(confirmacao == "y"){
+            for (int i = 0; i < listaFuncionarios.size(); i++){
+                salario = listaFuncionarios.at(i)->getSalario() + (listaFuncionarios.at(i)->getSalario()*listaFuncionarios.at(i)->getPorcentagem());
+                listaFuncionarios.at(i)->setSalario(salario);
+            }
+            cout << "Aumento concedido para todos os funcionarios\n";
+            system("pause");
+            system("cls");
+            return;
         }
-        cout << "Aumento concedido para todos os funcionarios\n";
-    }
-    else if(confirmacao == "n"){
-        cout << "Aumento Negado\nRetornando ao menu...\n";
-    }
-    else{
-        cout << "Entrada invalida\nRetornando ao menu...\n";
+        else if(confirmacao == "n"){
+            cout << "Aumento Negado\n";
+            system("pause");
+            system("cls");
+            return;
+        }
+        else{
+            cout << "Entrada invalida, insira outra(y/n)...\n";
+        }
     }
 }
