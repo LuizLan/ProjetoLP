@@ -272,7 +272,7 @@ int GerenciadorFuncionarios::cadastrarFuncionario(){// função que recebe o tip
         getline(cin, nome);
 
         if(nome == "Anya"){
-            cout << "\t\t\t\t-~-~-~-Parabéns, você descobriu um Easter Egg-~-~-~-\n";
+            cout << "\t\t\t\t-~-~-~-Parabens, voce descobriu um Easter Egg-~-~-~-\n";
             Sleep(5000);
             cout << "\t\t\t\t\t\t       Aproveite\n";
             Sleep(4000);
